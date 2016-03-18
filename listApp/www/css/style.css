@@ -1,0 +1,28 @@
+/* Empty. Add your own CSS if you like */
+
+
+
+
+
+
+.align_center{
+  text-align: center;
+}
+.size_full{
+  width: 100%;
+}
+.size_80{
+  width: 80%;
+}
+.size_20{
+  width: 20%;
+}
+.inline{
+  display: inline-block;
+}
+
+
+input{
+  border: .1rem solid grey !important;
+  border-radius: 1rem;
+}
