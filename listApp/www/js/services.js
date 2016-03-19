@@ -74,7 +74,7 @@ angular.module('listShare.services', [])
   };
 })
 
-.service('CheckLogin', function($location, socketService){
+.service('CheckLogin', function($location, $state, socketService){
 
   return{
     check: function(){
@@ -91,7 +91,7 @@ angular.module('listShare.services', [])
       else
       {
         if($location.path() !== '/tab/account')
-          $location.path('/account');
+          $state.go('tab.account')
         return false;
       }
     }
@@ -104,17 +104,24 @@ angular.module('listShare.services', [])
     getLists: function() {
       return $http.get(apiURL.url + '/lists')
         .then(function(response) {
-          // console.log('success response');
           return response;
         }, function(err) {
           // console.log('service errors');
+          console.log(err);
+        });
+    },
+    deleteList: function(id) {
+      return $http.delete(apiURL.url + '/lists/'+id)
+        .then(function(response) {
+          return response;
+        }, function(err) {
           console.log(err);
         });
     }
   };
 })
 
-.factory('Lists', function() {
+.factory('Lists', function(apiInterface) {
 
   var lists = [];
 
@@ -135,7 +142,7 @@ angular.module('listShare.services', [])
       return lists;
     },
     remove: function(list) {
-      lists.splice(lists.indexOf(list), 1);
+      apiInterface.deleteList(list.id);
     },
     get: function(listId) {
       for (var i = 0; i < lists.length; i++) {
@@ -149,7 +156,7 @@ angular.module('listShare.services', [])
 })
 
 /*Socket creator and handler*/
-.service('socketService', function(socketURL, apiInterface, Lists, $location){
+.service('socketService', function(socketURL, apiInterface, Lists, $location, $state){
   var isConnected = false;
   var currentSocket;
 
@@ -188,10 +195,11 @@ angular.module('listShare.services', [])
         {
           apiInterface.getLists()
           .then(function(res){
-            console.log(res.data);
             if (res.data.success)
             {
               Lists.setLists(res.data.data);
+              if($location.path() === '/tab/lists')
+                $state.go($state.current, {}, {reload: true});
             }
             else {
               console.log(res.data.reason);
@@ -199,7 +207,6 @@ angular.module('listShare.services', [])
 
           });
         }
-        console.log(data);
       });
 
       currentSocket = socket;

@@ -32,7 +32,7 @@ angular.module('listShare.controllers', [])
   vm.verify = CheckLogin.check;
 })
 
-.controller('AccountCtrl', function($scope, $location, CheckLogin, authService, socketService) {
+.controller('AccountCtrl', function($scope, $location, $state, CheckLogin, authService, socketService) {
   var vm = this;
 
   vm.login = loginHandler;
@@ -54,8 +54,8 @@ angular.module('listShare.controllers', [])
     authService.login(email, password).then(function(response) {
       localStorage.setItem('token', response.data.token);
       //console.log(localStorage.token);
-      vm.verify = CheckLogin.check();
-      $location.path('/');
+      //vm.showProfile = CheckLogin.check();
+      $state.go('tab.lists');
     });
   }
 
@@ -63,7 +63,7 @@ angular.module('listShare.controllers', [])
   {
     authService.register(email, password, fname, lname).then(function(response) {
       //console.log(localStorage.token);
-      $location.path('/');
+      $state.go($state.current, {}, {reload: true});
     });
   }
 
@@ -72,7 +72,7 @@ angular.module('listShare.controllers', [])
     localStorage.removeItem('token');
     socketService.getSocket().disconnect();
     vm.verify = CheckLogin.check();
-    $location.path('/');
+    $state.go($state.current, {}, {reload: true});
   }
 
 
