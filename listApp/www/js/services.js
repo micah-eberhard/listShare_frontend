@@ -106,7 +106,14 @@ angular.module('listShare.services', [])
         .then(function(response) {
           return response;
         }, function(err) {
-          // console.log('service errors');
+          console.log(err);
+        });
+    },
+    getItems: function(listID) {
+      return $http.get(apiURL.url + '/items/' + listID)
+        .then(function(response) {
+          return response;
+        }, function(err) {
           console.log(err);
         });
     },
@@ -122,15 +129,17 @@ angular.module('listShare.services', [])
 })
 
 .factory('Lists', function(apiInterface) {
-
   var lists = [];
-
 
   return {
     setLists: function(data) {
       try
       {
         lists = data;
+        for(var i=0; i < lists.length; i++)
+        {
+          buildItemList(lists, i, apiInterface);
+        }
         return {success:true};
       }
       catch(e)
@@ -198,7 +207,14 @@ angular.module('listShare.services', [])
             if (res.data.success)
             {
               Lists.setLists(res.data.data);
-              if($location.path() === '/tab/lists')
+              var routeCheck = $location.path().split('/');
+              var routeGood = false;
+              if(routeCheck[0] === '')
+                routeCheck.splice(0,1);
+              if(routeCheck[0] === 'tab' && routeCheck[1] === 'lists')
+                routeGood = true;
+              //if($location.path() === '/tab/lists')
+              if(routeGood)
                 $state.go($state.current, {}, {reload: true});
             }
             else {
@@ -213,3 +229,22 @@ angular.module('listShare.services', [])
     }
   };
 });
+
+
+function buildItemList(lists, i, apiInterface){
+  var list = lists[i];
+  console.log(i);
+  apiInterface.getItems(list.id)
+  .then(function(itemData){
+    console.log(itemData);
+    if(itemData.data.success)
+    {
+      list.items = itemData.data.data;
+      //console.log(i);
+    }
+    else {
+      console.log(itemData.data.reason);
+    }
+  });
+
+}

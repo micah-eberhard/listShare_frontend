@@ -2,8 +2,23 @@
   <ion-content>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="list in LC.lists" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
-        <h2>{{list.name}}</h2>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+        <div class="row">
+          <div class="col-md-10">
+            <h2>{{list.name}}</h2>
+            <p>
+              {{list.dateCreated | date:'medium'}}
+            </p>
+            <p>
+              Number of Items: {{list.items.length}}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <i class="icon ion-chevron-right icon-accessory"></i>
+          </div>
+        </div>
+
 
         <ion-option-button class="button-assertive" ng-click="LC.remove(list)">
           Delete

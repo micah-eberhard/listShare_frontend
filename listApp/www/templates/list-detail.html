@@ -6,9 +6,12 @@
 -->
 <ion-view view-title="{{list.name}}">
   <ion-content class="padding">
-    <img ng-src="{{list.face}}" style="width: 64px; height: 64px">
-    <p>
-      {{list.lastText}}
-    </p>
+    <div class="" ng-repeat="item in list.items track by $index">
+      <div class="row">
+        <div class="col-md-6">
+          {{item.name}}
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
