@@ -23,8 +23,13 @@ angular.module('listShare.controllers', [])
 })
 
 .controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin) {
-  //var vm = this;
+  var vm = this;
+  vm.verify = CheckLogin.check;
+  
   $scope.list = Lists.get($stateParams.listId);
+  vm.updateItem = function(item){
+    Lists.updateItem(item);
+  };
 })
 
 .controller('FriendsCtrl', function($scope, CheckLogin) {

@@ -4,7 +4,14 @@
 
 
 
-
+.clear{
+  border: none !important;
+  padding: none !important;
+}
+.slider{
+  margin-top: -.2rem;
+  margin-left: -.2rem;
+}
 .align_center{
   text-align: center;
 }
@@ -13,6 +20,9 @@
 }
 .size_80{
   width: 80%;
+}
+.size_25{
+  width: 25%;
 }
 .size_20{
   width: 20%;

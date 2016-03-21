@@ -117,6 +117,16 @@ angular.module('listShare.services', [])
           console.log(err);
         });
     },
+    updateItem: function(item) {
+
+      console.log(item);
+      return $http.post(apiURL.url + '/items/' + item.list_id + '/' + item.id, item)
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+        });
+    },
     deleteList: function(id) {
       return $http.delete(apiURL.url + '/lists/'+id)
         .then(function(response) {
@@ -149,6 +159,11 @@ angular.module('listShare.services', [])
     },
     getAll: function() {
       return lists;
+    },
+    updateItem: function(item) {
+      console.log("Found change at: " + item.list_id);
+      console.log(item);
+      apiInterface.updateItem(item);
     },
     remove: function(list) {
       apiInterface.deleteList(list.id);
