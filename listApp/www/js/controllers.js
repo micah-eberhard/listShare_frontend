@@ -5,30 +5,93 @@ angular.module('listShare.controllers', [])
   console.log("home");
 })
 
-.controller('ListsCtrl', function($scope, Lists, CheckLogin) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+.controller('ListsCtrl', function($scope, Lists, CheckLogin, socketService, apiInterface) {
   var vm = this;
   vm.verify = CheckLogin.check;
-
   vm.lists = Lists.getAll();
   vm.remove = function(list) {
     Lists.remove(list);
   };
+
+  var currSocket = socketService.getSocket();
+
+  var tryConnect = setInterval(function() {
+    if(currSocket === false)
+    {
+      console.log("Attempt Socket");
+      currSocket = socketService.getSocket();
+    }
+    else {
+      stopInterval(tryConnect);
+    }
+  }, 300);
+
+  function stopInterval(currInterval)
+  {
+    console.log(currSocket);
+    clearInterval(currInterval);
+    currSocket
+    .on('update', function (data) {
+      if(data.location === 'lists')
+      {
+        apiInterface.getLists()
+        .then(function(res){
+          if (res.data.success)
+          {
+            Lists.setLists(res.data.data);
+            vm.lists = Lists.getAll();
+            currSocket.emit('push_list_single', {success:true});//<<<Do something here
+          }
+          else {
+            console.log(res.data.reason);
+          }
+
+        });
+      }
+    });
+
+    // currSocket.on('push_lists', function(data){
+    //   console.log("Refresh Lists");
+    //   vm.lists = Lists.getAll();
+    //   currSocket.emit('push_list_single', {success:true});
+    // });
+  }
 })
 
-.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin) {
+.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin, socketService) {
   var vm = this;
   vm.verify = CheckLogin.check;
-  
+
   $scope.list = Lists.get($stateParams.listId);
+
   vm.updateItem = function(item){
     Lists.updateItem(item);
+
+
+    var currSocket = socketService.getSocket(); //= socketService.getSocket();
+
+      currSocket
+      .on('push_list_single', function(data){
+        console.log("Single List");
+        $scope.list = Lists.get($stateParams.listId);
+      });
+      // .on('update', function (data) {
+      //   if(data.location === 'lists')
+      //   {
+      //     apiInterface.getLists()
+      //     .then(function(res){
+      //       if (res.data.success)
+      //       {
+      //         Lists.setLists(res.data.data);
+      //         vm.lists = Lists.getAll();
+      //       }
+      //       else {
+      //         console.log(res.data.reason);
+      //       }
+      //
+      //     });
+      //   }
+      // });
   };
 })
 

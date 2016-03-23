@@ -183,6 +183,7 @@ angular.module('listShare.services', [])
 .service('socketService', function(socketURL, apiInterface, Lists, $location, $state){
   var isConnected = false;
   var currentSocket;
+  var socket;
 
   return {
     checkConnect : function(){
@@ -196,7 +197,7 @@ angular.module('listShare.services', [])
     },
     connect_socket : function(token) {
       //console.log("Starting connect");
-      var socket = io.connect(socketURL.url, {
+      socket = io.connect(socketURL.url, {
         query: 'token=' + token
       });
 
@@ -215,22 +216,23 @@ angular.module('listShare.services', [])
         console.log(data);
       })
       .on('update', function (data) {
-        if(data.location === 'lists')
+        if(data.location === 'all')
         {
           apiInterface.getLists()
           .then(function(res){
             if (res.data.success)
             {
               Lists.setLists(res.data.data);
-              var routeCheck = $location.path().split('/');
-              var routeGood = false;
-              if(routeCheck[0] === '')
-                routeCheck.splice(0,1);
-              if(routeCheck[0] === 'tab' && routeCheck[1] === 'lists')
-                routeGood = true;
-              //if($location.path() === '/tab/lists')
-              if(routeGood)
-                $state.go($state.current, {}, {reload: true});
+              socket.emit('push_lists', {success:true});
+              // var routeCheck = $location.path().split('/');
+              // var routeGood = false;
+              // if(routeCheck[0] === '')
+              //   routeCheck.splice(0,1);
+              // if(routeCheck[0] === 'tab' && routeCheck[1] === 'lists')
+              //   routeGood = true;
+              // //if($location.path() === '/tab/lists')
+              // if(routeGood)
+              //   $state.go($state.current, {}, {reload: true});
             }
             else {
               console.log(res.data.reason);

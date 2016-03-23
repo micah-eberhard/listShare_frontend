@@ -15,7 +15,7 @@
         Acquired?
       </div>
     </div>
-    <div class="" ng-repeat="item in list.items track by $index" type="item-text-wrap">
+    <div class="" ng-repeat="item in list.items | orderBy:'name':false">
       <div class="row">
         <div class="col-md-3 size_25">
           {{item.name}}
@@ -26,11 +26,11 @@
         <div class="col-md-3 size_25">
           {{item.amount}} oz
         </div>
-        <div class="col-md-3 size_25">
+        <div class="col-md-3 size_25" ng-init="item.searching_mark = (item.searching > 0)">
           <ion-checkbox class="clear"  ng-checked="item.searching > 0" ng-model="item.searching_mark" ng-change="item.changed = {searching:item.searching_mark}; LDC.updateItem(item)">
           </ion-checkbox>
         </div>
-        <div class="col-md-3 size_25">
+        <div class="col-md-3 size_25" ng-init="item.acquired_mark = (item.acquired > 0)">
           <ion-checkbox  class="clear" ng-checked="item.acquired > 0" ng-model="item.acquired_mark" ng-change="item.changed = {acquired:item.acquired_mark}; LDC.updateItem(item)">
           </ion-checkbox>
         </div>
