@@ -28,19 +28,22 @@ angular.module('listShare.controllers', [])
 
   function stopInterval(currInterval)
   {
-    console.log(currSocket);
+    //console.log(currSocket);
     clearInterval(currInterval);
     currSocket
     .on('update', function (data) {
       if(data.location === 'lists')
       {
+        console.log(data);
         apiInterface.getLists()
         .then(function(res){
           if (res.data.success)
           {
             Lists.setLists(res.data.data);
-            vm.lists = Lists.getAll();
-            currSocket.emit('push_list_single', {success:true});//<<<Do something here
+            if(!data.item)
+              vm.lists = Lists.getAll();
+            else
+              currSocket.emit('push_list_single', data);//<<<Do something here
           }
           else {
             console.log(res.data.reason);
@@ -66,6 +69,7 @@ angular.module('listShare.controllers', [])
 
   vm.updateItem = function(item){
     Lists.updateItem(item);
+    };
 
 
     var currSocket = socketService.getSocket(); //= socketService.getSocket();
@@ -73,7 +77,19 @@ angular.module('listShare.controllers', [])
       currSocket
       .on('push_list_single', function(data){
         console.log("Single List");
-        $scope.list = Lists.get($stateParams.listId);
+        console.log($scope.list);
+        var found = false;
+        for(var i=0; i < $scope.list.items.length && !found; i++)
+        {
+          //console.log(i);
+          if($scope.list.items[i].id === data.item.id)
+          {
+            console.log('found***');
+            $scope.list.items.splice(i, 1, data.item);
+            found = true;
+          }
+        }
+        //$scope.list = Lists.get($stateParams.listId);
       });
       // .on('update', function (data) {
       //   if(data.location === 'lists')
@@ -92,7 +108,6 @@ angular.module('listShare.controllers', [])
       //     });
       //   }
       // });
-  };
 })
 
 .controller('FriendsCtrl', function($scope, CheckLogin) {
