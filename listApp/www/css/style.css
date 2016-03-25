@@ -1,9 +1,33 @@
-/* Empty. Add your own CSS if you like */
+/* Custom CSS */
+input{
+  border: .1rem solid grey !important;
+  border-radius: 1rem;
+}
 
 
 
 
+.addRecipient{
+  height: 1.5rem !important;
+}
 
+
+.topSelect{
+  margin-top: .3rem;
+}
+.addBtn{
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 1rem;
+}
+.topBtn{
+  margin-top: -.55rem;
+  font-size: 2rem;
+}
+.recipientBtn{
+  font-size: 1.2rem;
+}
 .clear{
   border: none !important;
   padding: none !important;
@@ -15,11 +39,35 @@
 .align_center{
   text-align: center;
 }
+.align_right{
+  text-align: right;
+}
+.align_left{
+  text-align: left;
+}
 .size_full{
   width: 100%;
 }
+.size_90{
+  width: 90%;
+}
 .size_80{
   width: 80%;
+}
+.size_75{
+  width: 75%;
+}
+.size_60{
+  width: 60%;
+}
+.size_50{
+  width: 50%;
+}
+.size_40{
+  width: 40%;
+}
+.size_30{
+  width: 30%;
 }
 .size_25{
   width: 25%;
@@ -27,12 +75,12 @@
 .size_20{
   width: 20%;
 }
+.size_10{
+  width: 10%;
+}
+.size_5{
+  width: 5%;
+}
 .inline{
   display: inline-block;
-}
-
-
-input{
-  border: .1rem solid grey !important;
-  border-radius: 1rem;
 }

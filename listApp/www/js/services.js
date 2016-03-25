@@ -101,6 +101,14 @@ angular.module('listShare.services', [])
 .service('apiInterface', function($http, apiURL){
 
   return {
+    addList: function(list) {
+      return $http.post(apiURL.url + '/lists', list)
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+        });
+    },
     getLists: function() {
       return $http.get(apiURL.url + '/lists')
         .then(function(response) {
@@ -119,7 +127,7 @@ angular.module('listShare.services', [])
     },
     updateItem: function(item) {
 
-      console.log(item);
+      //console.log(item);
       return $http.post(apiURL.url + '/items/' + item.list_id + '/' + item.id, item)
         .then(function(response) {
           return response;
@@ -162,7 +170,7 @@ angular.module('listShare.services', [])
     },
     updateItem: function(item) {
       console.log("Found change at: " + item.list_id);
-      console.log(item);
+      //console.log(item);
       apiInterface.updateItem(item);
     },
     remove: function(list) {
@@ -250,10 +258,10 @@ angular.module('listShare.services', [])
 
 function buildItemList(lists, i, apiInterface){
   var list = lists[i];
-  console.log(i);
+  //console.log(i);
   apiInterface.getItems(list.id)
   .then(function(itemData){
-    console.log(itemData);
+    //console.log(itemData);
     if(itemData.data.success)
     {
       list.items = itemData.data.data;

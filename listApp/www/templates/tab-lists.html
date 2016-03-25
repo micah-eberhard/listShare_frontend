@@ -1,7 +1,66 @@
 <ion-view ng-init="LC.verify()" view-title="My Lists">
-  <ion-content>
+  <ion-content ng-init="reverse = false; newAdd = false; sortBy='name'">
+    <div class="row">
+      <div class="col-md-5 size_25">
+        <select class="size_90 topSelect" name="sort" ng-model="sortBy">
+          <option value="name">Name</option>
+          <option value="items">Item Number</option>
+          <option value="dateCreated">Date Created</option>
+          <option value="dateModified">Date Modified</option>
+        </select>
+
+      </div>
+      <div class="col-md-1 size_5 topSelect" ng-click="reverse = !reverse">
+        <span ng-hide="reverse" class="ion-ios-arrow-up size_50 align_center"></span>
+        <span ng-show="reverse" class="ion-ios-arrow-down size_50 align_center"></span>
+      </div>
+      <div class="col-md-4 size_60 align_center">
+        <input class="size_full align_center" type="text" name="name" value="" ng-model="search" placeholder ="Search">
+      </div>
+      <div class="col-md-2 size_10 row">
+        <button class="ion-ios-plus-outline addBtn topBtn size_full align_right" ng-hide="newAdd" type="button" ng-click="newAdd = !newAdd" name="addBtn"></button>
+        <button class="ion-ios-minus-outline addBtn topBtn size_full align_right" ng-show="newAdd" type="button" ng-click="newAdd = !newAdd" name="addBtn"></button>
+      </div>
+    </div>
+    <div class="row align_center" ng-show="newAdd" ng-init="recipients = []">
+      <div class="col-md-12 size_full">
+        <div class="row">
+          <div class="col-md-12 size_full">
+            <input class="size_full align_center inline" type="text" name="addName" value="" ng-model="addName" placeholder="List Name">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9 size_75">
+            <div ng-repeat="recipient in recipients track by $index" class="row">
+              <div class="col-md-10 size_80 align_left">
+                {{recipient}}
+              </div>
+              <div class="col-md-2 size_20 align_right">
+                <button class="ion-ios-close-outline addBtn recipientBtn align_center" type="button" ng-click="recipients.splice($index, 1)" name="delRecipient"></button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-10 size_full align_right">
+                <input type="text" class="addRecipient align_center size_full" name="name" value="" ng-model="addRecipient" placeholder="Add Recipient">
+              </div>
+              <div class="col-md-2 size_20 align_right">
+                <button class="ion-ios-plus-outline addBtn recipientBtn align_center" type="button" ng-click="recipients.push(addRecipient)" name="addRecipient"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 size_25">
+            <div class="row">
+              <div class="col-md-12 size_full align_right">
+                <button class="ion-checkmark-round addBtn recipientBtn align_center" type="button" ng-click="LC.addList(addName, recipients); newAdd = !newAdd; addName=''" name="addBtn">Done</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="list in LC.lists" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="list in LC.lists | filter:search | orderBy:sortBy:reverse" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
         <div class="row">
           <div class="col-md-10">
             <h2>{{list.name}}</h2>

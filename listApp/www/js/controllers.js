@@ -12,6 +12,13 @@ angular.module('listShare.controllers', [])
   vm.remove = function(list) {
     Lists.remove(list);
   };
+  vm.addList = function(name, recipients){
+    var listObj ={
+      name: name,
+      recipients: recipients
+    };
+    apiInterface.addList(listObj)
+  };
 
   var currSocket = socketService.getSocket();
 
@@ -30,34 +37,57 @@ angular.module('listShare.controllers', [])
   {
     //console.log(currSocket);
     clearInterval(currInterval);
-    currSocket
-    .on('update', function (data) {
-      if(data.location === 'lists')
-      {
-        console.log(data);
-        apiInterface.getLists()
-        .then(function(res){
-          if (res.data.success)
+    if(true)
+    {
+      currSocket
+      .removeAllListeners('update_lists')
+      .on('update_lists', updateLists);
+    }
+  }
+  function updateLists(data) {
+    if(data.location === 'lists')
+    {
+      //console.log(data);
+      apiInterface.getLists()
+      .then(function(res){
+        if (res.data.success)
+        {
+          Lists.setLists(res.data.data);
+          if(data.list)
           {
-            Lists.setLists(res.data.data);
-            if(!data.item)
-              vm.lists = Lists.getAll();
-            else
-              currSocket.emit('push_list_single', data);//<<<Do something here
+            if(data.list.type === 'new')
+            {
+              vm.lists.push(data.list);
+            }
+            else {
+              //vm.lists = Lists.getAll();
+              var found = false;
+              for(var i=0; i < vm.lists.length && !found; i++)
+              {
+                //console.log(i);
+                if(vm.lists[i].id === parseInt(data.id))
+                {
+                  console.log("Found");
+                  if(data.list !== 'other')
+                    vm.lists.splice(i, 1, data.list);
+                  else
+                  {
+                    vm.lists.splice(i,1);
+                  }
+                  found = true;
+                }
+              }
+            }
           }
-          else {
-            console.log(res.data.reason);
-          }
+          else if (data.item)
+            currSocket.emit('push_list_single', data);//<<<Do something here
+        }
+        else {
+          console.log(res.data.reason);
+        }
 
-        });
-      }
-    });
-
-    // currSocket.on('push_lists', function(data){
-    //   console.log("Refresh Lists");
-    //   vm.lists = Lists.getAll();
-    //   currSocket.emit('push_list_single', {success:true});
-    // });
+      });
+    }
   }
 })
 
@@ -71,26 +101,40 @@ angular.module('listShare.controllers', [])
     Lists.updateItem(item);
     };
 
-
     var currSocket = socketService.getSocket(); //= socketService.getSocket();
 
       currSocket
+      .removeAllListeners('push_list_single')
       .on('push_list_single', function(data){
-        console.log("Single List");
-        console.log($scope.list);
+        console.log("Single Item");
         var found = false;
         for(var i=0; i < $scope.list.items.length && !found; i++)
         {
           //console.log(i);
           if($scope.list.items[i].id === data.item.id)
           {
-            console.log('found***');
+            console.log("Found");
             $scope.list.items.splice(i, 1, data.item);
             found = true;
           }
         }
-        //$scope.list = Lists.get($stateParams.listId);
       });
+
+    // function singleListener(data){
+    //   console.log("Single Item");
+    //   var found = false;
+    //   console.log($scope.list.items);
+    //   for(var i=0; i < $scope.list.items.length && !found; i++)
+    //   {
+    //     //console.log(i);
+    //     if($scope.list.items[i].id === data.item.id)
+    //     {
+    //       console.log("Found");
+    //       $scope.list.items.splice(i, 1, data.item);
+    //       found = true;
+    //     }
+    //   }
+    // }
       // .on('update', function (data) {
       //   if(data.location === 'lists')
       //   {
