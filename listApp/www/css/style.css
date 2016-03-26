@@ -2,16 +2,43 @@
 input{
   border: .1rem solid grey !important;
   border-radius: 1rem;
+  margin: .1rem;
+}
+select{
+  border: .1rem solid grey !important;
+  border-radius: 1rem;
+  margin: .1rem;
+}
+.holder {
+  margin: 0;
+  margin-bottom: .5rem;
+  padding: 0;
 }
 
 
+/* List Details */
+.dropArrow{
+  background: linear-gradient(rgb(255, 255, 255), rgb(41, 85, 121));
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.51);
+  border-bottom: .1rem solid grey;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  height: .4rem;
+}
+.listSettings{
+  background: linear-gradient(rgb(127, 147, 163), rgb(232, 243, 251));
+  height: 11rem;
+}
+
+/* Tabs */
+.tabHeader{
+  border-bottom: .1rem solid grey;
+}
 
 
 .addRecipient{
   height: 1.5rem !important;
 }
-
-
 .topSelect{
   margin-top: .3rem;
 }
@@ -20,6 +47,11 @@ input{
   background-color: rgba(255, 255, 255, 0);
   border: none;
   font-size: 1rem;
+}
+.detailAdd{
+  margin-top: -.25rem;
+  margin-left: 1rem;
+  font-size: 2rem;
 }
 .topBtn{
   margin-top: -.55rem;
@@ -31,6 +63,8 @@ input{
 .clear{
   border: none !important;
   padding: none !important;
+  background: none !important;
+  background-color: none !important;
 }
 .slider{
   margin-top: -.2rem;
@@ -66,6 +100,9 @@ input{
 .size_40{
   width: 40%;
 }
+.size_33{
+  width: 33%;
+}
 .size_30{
   width: 30%;
 }
@@ -83,4 +120,19 @@ input{
 }
 .inline{
   display: inline-block;
+}
+a:active{
+  color: black;
+}
+a:visited{
+  color: black;
+}
+a:link{
+  color: black;
+}
+a:hover{
+  color: grey;
+}
+a{
+  text-decoration: none;
 }

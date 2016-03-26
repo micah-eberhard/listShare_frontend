@@ -1,21 +1,123 @@
 
-<ion-view ng-init="LDC.verify()" view-title="{{list.name}}">
-  <ion-content class="padding">
-    <div class="row">
-      <div class="col-md-3 size_25">
-        Name
-      </div>
-      <div class="col-md-3 size_25">
-        Amount
-      </div>
-      <div class="col-md-3 size_25">
-        Searching?
-      </div>
-      <div class="col-md-3 size_25">
-        Acquired?
+<ion-view ng-init="LDC.verify(); showTab='Items'; showInProgress=true; dropDown = false; sortBy='name'; reverse=false; nameReverse=false; amountReverse=false; searchingReverse=false; acquiredReverse=false" view-title="{{list.name}}">
+  <ion-content class="">
+    <div class="row holder size_full">
+      <div class="col-md-12 size_full holder">
+        <div class="row listSettings" ng-hide="!dropDown">
+          <div class="col-md-12 size_full">
+            <div class="row tabHeader">
+              <div class="col-md-4 size_33 align_center">
+                <a href="" ng-click="showTab='Items'">Items</a>
+              </div>
+              <div class="col-md-4 size_33 align_center">
+                <a href="" ng-click="showTab='Recipients'">Recipients</a>
+
+              </div>
+              <div class="col-md-4 size_33 align_center">
+                <a href="" ng-click="showTab='Statistics'">Statistics</a>
+
+              </div>
+            </div>
+            <div class="row" ng-show="showTab=='Items'">
+              <div class="col-md-12 size_full">
+                <div class="row">
+                  <div class="col-md-12 size_full align_center">
+                    Add an item.
+                  </div>
+                </div>
+                <div class="row size_full">
+                  <div class="col-md-9 size_75">
+                    <input class="align_center size_full" type="text" name="name" value="" placeholder="Name">
+                    <input class="align_center size_full" type="text" name="amount" value="" placeholder="Amount">
+                    <select class="align_center size_full"  name="category">
+                      <option value="meat">Meat</option>
+                      <option value="dairy">Dairy</option>
+                      <option value="grains">Grains</option>
+                      <option value="kitchen">Kitchen</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 size_25">
+                    <button class="ion-ios-plus-outline addBtn detailAdd align_center" type="button" ng-click="" name="addBtn"> Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="showTab=='Recipients'">
+              <div class="col-md-12 size_full">
+                <div class="row">
+                  <div class="col-md-12 size_full align_center">
+                    Add a recipient to this list.
+                  </div>
+                </div>
+                <div class="row size_full">
+                  <div class="col-md-9 size_75">
+                    <input class="align_center size_full" type="text" name="name" value="" placeholder="Name">
+                  </div>
+                  <div class="col-md-3 size_25">
+                    <button class="ion-ios-plus-outline addBtn detailAdd align_center" type="button" ng-click="" name="addBtn"> Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="showTab=='Statistics'">
+              <div class="col-md-12">
+                Statistics
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row dropArrow">
+          <div class="col-md-12 size_full  align_center" ng-click="dropDown = !dropDown">
+            <span class="ion-ios-arrow-down"></span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="" ng-repeat="item in list.items | orderBy:'name':false">
+
+    <div class="row">
+      <div class="col-md-6 size_50">
+        <input class="align_center inline" type="text" name="searchItem" ng-model="searchItem" value="" placeholder="Search">
+      </div>
+      <div class="col-md-6 size_50">
+        <ion-checkbox class="clear inline"  ng-checked="showInProgress" ng-model="showInProgress">
+          Show In Progress
+        </ion-checkbox>
+      </div>
+    </div>
+
+
+    <div class="row padding">
+      <div class="col-md-3 size_25" ng-click="sortBy = 'name'; nameReverse = !nameReverse; reverse = nameReverse">
+        Name
+        <div class="topSelect inline">
+          <span ng-hide="nameReverse" class="ion-ios-arrow-up size_50 align_center"></span>
+          <span ng-show="nameReverse" class="ion-ios-arrow-down size_50 align_center"></span>
+        </div>
+      </div>
+      <div class="col-md-3 size_25" ng-click="sortBy = 'amount'; amountReverse = !amountReverse; reverse = amountReverse">
+        Amount
+        <div class="topSelect inline">
+          <span ng-hide="amountReverse" class="ion-ios-arrow-up size_50 align_center"></span>
+          <span ng-show="amountReverse" class="ion-ios-arrow-down size_50 align_center"></span>
+        </div>
+      </div>
+      <div class="col-md-3 size_25" ng-click="sortBy = 'searching';searchingReverse = !searchingReverse; reverse = searchingReverse">
+        Searching
+        <div class="topSelect inline">
+          <span ng-hide="searchingReverse" class="ion-ios-arrow-up size_50 align_center"></span>
+          <span ng-show="searchingReverse" class="ion-ios-arrow-down size_50 align_center"></span>
+        </div>
+      </div>
+      <div class="col-md-3 size_25" ng-click="sortBy = 'acquired'; acquiredReverse = !acquiredReverse; reverse = acquiredReverse">
+        Acquired
+        <div class="topSelect inline">
+          <span ng-hide="acquiredReverse" class="ion-ios-arrow-up size_50 align_center"></span>
+          <span ng-show="acquiredReverse" class="ion-ios-arrow-down size_50 align_center"></span>
+        </div>
+      </div>
+    </div>
+    <div class="padding" ng-repeat="item in list.items | filter:searchItem | orderBy:sortBy:reverse">
       <div class="row">
         <div class="col-md-3 size_25">
           {{item.name}}
