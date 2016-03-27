@@ -14,6 +14,16 @@ select{
   margin-bottom: .5rem;
   padding: 0;
 }
+.navBG_list{
+  background: rgb(64, 64, 64);
+}
+.navBG_friends{
+  background: rgb(64, 64, 64);
+}
+.navBG_account{
+  background: rgb(64, 64, 64);
+}
+
 
 
 /* List Details */
@@ -26,7 +36,7 @@ select{
   height: .4rem;
 }
 .listSettings{
-  background: linear-gradient(rgb(127, 147, 163), rgb(232, 243, 251));
+  background: linear-gradient(#11c1f3, rgb(232, 243, 251));
   height: 11rem;
 }
 
@@ -51,7 +61,8 @@ select{
 .detailAdd{
   margin-top: -.25rem;
   margin-left: 1rem;
-  font-size: 2rem;
+  font-size: 3rem;
+  color: #275675;
 }
 .topBtn{
   margin-top: -.55rem;
@@ -122,13 +133,13 @@ select{
   display: inline-block;
 }
 a:active{
-  color: black;
+  color: #286ada;
 }
 a:visited{
-  color: black;
+  color: #286ada;
 }
 a:link{
-  color: black;
+  color: #286ada;
 }
 a:hover{
   color: grey;

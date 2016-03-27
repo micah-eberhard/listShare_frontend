@@ -14,18 +14,6 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-// MAIN COLORS:
-$gold:                            #ffc300 !default;
-$darkturquoise:                   #00b3c5 !default;
-$slategrey:                       #275675 !default;
-$lightblue:                       #a0daea !default;
-$positive:                        #00b3c5 !default;
-
-// SECONDARY:
-$shadow:                          #0b3041 !default; // SHADOW
-$offwhite:                        #fffdf4 !default; // HIGHLIGHT
-
-$calm: $lightblue;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -36,6 +24,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .bar.bar-header {
   background: $darkturquoise;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.navBG{
+  background-color: $darkturquoise;
 }
 
 .tab-nav.tabs {
