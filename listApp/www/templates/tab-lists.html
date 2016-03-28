@@ -60,7 +60,7 @@
       </div>
     </div>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="list in LC.lists | filter:search | orderBy:sortBy:reverse" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
+      <ion-item class="item-remove-animate item-icon-right"  ng-repeat="list in LC.lists | filter:search | orderBy:sortBy:reverse" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
         <div class="row">
           <div class="col-md-10">
             <span class="itemHeader"><h2>{{list.name}}</h2></span>

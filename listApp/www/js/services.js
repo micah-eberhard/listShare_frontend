@@ -174,6 +174,17 @@ angular.module('listShare.services', [])
           //return err;
         });
     },
+    removeFriend: function(friend_id) {
+      //console.log(item);
+      return $http.delete(apiURL.url + '/friends/' + friend_id)
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+          //err.success = false;
+          //return err;
+        });
+    },
     deleteList: function(id) {
       return $http.delete(apiURL.url + '/lists/'+id)
         .then(function(response) {

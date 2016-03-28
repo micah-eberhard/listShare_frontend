@@ -7,19 +7,25 @@
             Add a friend.
           </div>
         </div>
-        <div class="row size_full">
-          <div class="col-md-9 size_75">
-            <input class="align_center size_full" type="text" name="addemail" value="" ng-model="friendEmail" placeholder="Email">
+        <ng-form name="addFriend_form">
+          <div class="row size_full">
+            <div class="col-md-9 size_75">
+              <input class="align_center size_full" type="email" name="addEmail" value="" ng-model="friendEmail" placeholder="Email">
+            </div>
+            <div class="col-md-3 size_25">
+              <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="FC.addFriend(friendEmail)" name="addBtn"></button>
+            </div>
           </div>
-          <div class="col-md-3 size_25">
-            <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="FC.addFriend(friendEmail)" name="addBtn"></button>
+          <div ng-show="addFriend_form.$submitted || addFriend_form.addEmail.$touched">
+  					<span ng-show="addFriend_form.addEmail.$error.required" class="flashError">This is a required field.</span>
+            <span ng-show="addFriend_form.addEmail.$error.email" class="flashError">Not a valid email.</span>
+  		    </div>
+          <div ng-show="FC.error" class="row size_90 flashError">
+            <div class="col-md-9 size_full">
+              <span >{{FC.error}}</span>
+            </div>
           </div>
-        </div>
-        <div ng-show="FC.error" class="row size_90 flashError">
-          <div class="col-md-9 size_full">
-            <span >{{FC.error}}</span>
-          </div>
-        </div>
+        </ng-form>
       </div>
     </div>
     <div class="row padding">
@@ -32,7 +38,7 @@
                 <p class="description">
                   {{friend.email}}
                 </p>
-                <ion-option-button class="button-assertive" ng-click="">
+                <ion-option-button class="button-assertive" ng-click="FC.removeFriend(friend)">
                   Delete
                 </ion-option-button>
               </ion-item>

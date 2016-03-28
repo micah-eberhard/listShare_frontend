@@ -12,12 +12,44 @@ angular.module('listShare.controllers', [])
   vm.remove = function(list) {
     Lists.remove(list);
   };
+  var lengthHold = 0;
+  var lengthCheck = 0;
+  vm.errorList = [];
   vm.addList = function(name, recipients){
     var listObj ={
       name: name,
       recipients: recipients
     };
     apiInterface.addList(listObj)
+    .then(function(res){
+      vm.errorList = [];
+      if(res.data.success)
+      {
+        lengthHold = recipients.length;
+        lengthCheck = 0;
+        for(var i=0; i < recipients.length; i++)
+        {
+          apiInterface.addRecipient(recipients[i], parseInt(res.data.id))
+          .then(function(addRes){
+            if(addRes.data.success)
+            {
+              console.log("Added: " + addRes.data.id);
+              lengthCheck ++;
+            }
+            else {
+              console.log(addRes.data.reason);
+              vm.errorList.push(addRes.data.reason);
+              lengthCheck ++;
+            }
+            if(lengthCheck == lengthHold)
+            {
+              console.log("Errors: ");
+              console.log(vm.errorList);
+            }
+          });
+        }
+      }
+    });
   };
   vm.addRecipient = recipientHandler;
 
@@ -117,11 +149,39 @@ angular.module('listShare.controllers', [])
   var vm = this;
   vm.verify = CheckLogin.check;
   $scope.list = Lists.get($stateParams.listId);
+  vm.friendList = friendService.get();
+  vm.tempFriends = [];
+
+  vm.checkLog = function(str)
+  {
+    console.log(str);
+  };
+
   vm.resetError = function(){
     delete vm.error;
   };
   vm.getFriends = function(){
     return friendService.get();
+  };
+
+  vm.searchFriends = function(friendCheck)
+  {
+    console.log("Fire");
+    var friends = friendService.get();
+    vm.tempFriends = [];
+    for(var i=0; i < friends.length; i++)
+    {
+      var match = true;
+      for(var j=0; j < friendCheck.length && match; j++)
+      {
+        if(friendCheck[j] !== friends[i].email[j])
+        {
+          match = false;
+        }
+        if(j === friendCheck.length -1 && match)
+          vm.tempFriends.push(friends[i]);
+      }
+    }
   };
 
   vm.addItem = function(item)
@@ -196,6 +256,24 @@ angular.module('listShare.controllers', [])
   vm.verify = CheckLogin.check;
   vm.friendList = [];
 
+  vm.removeFriend = function(friend){
+    apiInterface.removeFriend(friend.friend_id)
+    .then(function(res){
+      if(res.data.success)
+      {
+        for(var j=0; j < vm.friendList.length; j++)
+        {
+          if(vm.friendList[j].friend_id === friend.friend_id)
+          {
+            vm.friendList.splice(j, 1);
+          }
+        }
+      }
+      else{
+        console.log("Failed to remove friend: " + friend.email);
+      }
+    });
+  };
   vm.addFriend = function(email){
     apiInterface.addFriend(email)
     .then(function(res){

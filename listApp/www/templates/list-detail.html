@@ -43,7 +43,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="showTab=='Recipients'">
+            <div class="row" ng-show="showTab=='Recipients'" ng-init="recipientEmail = ''">
               <div class="col-md-12 size_full">
                 <div class="row">
                   <div class="col-md-12 size_full align_center">
@@ -52,11 +52,24 @@
                 </div>
                 <div class="row size_full">
                   <div class="col-md-9 size_75">
-                    <input class="align_center size_full" type="text" name="addemail" value="" ng-model="recipientEmail" placeholder="Email">
-                    <select2 ng-model="obj.field" s2-options="val.id as val.firstName for val in LDC.getFriends()"></select2>
+                    <input class="align_center size_full" type="text" name="addemail" value="recipientEmail" ng-model="recipientEmail" placeholder="Email" ng-change="LDC.searchFriends(recipientEmail)">
+                    {{recipientEmail}}
                   </div>
                   <div class="col-md-3 size_25">
                     <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addRecipient(recipientEmail, list)" name="addBtn"></button>
+                  </div>
+                </div>
+                <div class="row" ng-show="LDC.tempFriends.length > 0">
+                  <div class="col-md-12 size_full">
+                    <div class="row autoList" ng-repeat="friend in LDC.tempFriends">
+                        <div class="col-md-6 size_50 align_center" ng-click="LDC.checkLog(recipientEmail)">
+                          {{friend.firstName}}
+                          {{friend.lastName}}
+                        </div>
+                        <div class="col-md-6 size_50 align_left" ng-click="recipientEmail = friend.email">
+                          {{friend.email}}
+                        </div>
+                    </div>
                   </div>
                 </div>
                 <div ng-show="LDC.error" class="row size_90 flashError">
@@ -128,7 +141,7 @@
       </div>
     </div>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="item in list.items | filter:searchItem | orderBy:sortBy:reverse">
+      <ion-item class="item-remove-animate" ng-repeat="item in list.items | filter:searchItem | orderBy:sortBy:reverse">
 
         <div class="row">
           <div class="col-md-3 size_25">
