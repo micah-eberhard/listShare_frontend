@@ -19,6 +19,21 @@ angular.module('listShare.controllers', [])
     };
     apiInterface.addList(listObj)
   };
+  vm.addRecipient = recipientHandler;
+
+  function recipientHandler(email, list)
+  {
+    apiInterface.addRecipient(email, list)
+    .then(function(res){
+      if(res.success)
+      {
+        console.log("Added " + email);
+      }
+      else {
+        console.log("Failed to add " + email);
+      }
+    });
+  }
 
   var currSocket = socketService.getSocket();
 
@@ -45,6 +60,7 @@ angular.module('listShare.controllers', [])
     }
   }
   function updateLists(data) {
+    console.log("Got Emit: "+ data.location);
     if(data.location === 'lists')
     {
       //console.log(data);
@@ -57,6 +73,7 @@ angular.module('listShare.controllers', [])
           {
             if(data.list.type === 'new')
             {
+              console.log("New List: "+data.list);
               vm.lists.push(data.list);
             }
             else {
@@ -80,7 +97,12 @@ angular.module('listShare.controllers', [])
             }
           }
           else if (data.item)
-            currSocket.emit('push_list_single', data);//<<<Do something here
+          {
+            currSocket.emit('push_list_single', data);
+          }
+          else {
+            vm.lists = Lists.getAll();
+          }
         }
         else {
           console.log(res.data.reason);
@@ -91,22 +113,48 @@ angular.module('listShare.controllers', [])
   }
 })
 
-.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin, socketService) {
+.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin, socketService, apiInterface) {
   var vm = this;
   vm.verify = CheckLogin.check;
-
   $scope.list = Lists.get($stateParams.listId);
 
+  vm.addItem = function(item)
+  {
+    apiInterface.addItem(item)
+    .then(function(res){
+      if(res.data.success)
+        console.log("Item Added");
+      else
+        console.log("Item failed to add.");
+    });
+  };
   vm.updateItem = function(item){
     Lists.updateItem(item);
     };
+
+    vm.addRecipient = recipientHandler;
+
+    function recipientHandler(email, list)
+    {
+      apiInterface.addRecipient(email, list)
+      .then(function(res){
+        if(res.data.success)
+        {
+          console.log("Added " + email);
+        }
+        else {
+          console.log("Failed to add " + email);
+        }
+      });
+    }
 
     var currSocket = socketService.getSocket(); //= socketService.getSocket();
 
       currSocket
       .removeAllListeners('push_list_single')
       .on('push_list_single', function(data){
-        console.log("Single Item");
+
+        console.log("Single Item *******");
         var found = false;
         for(var i=0; i < $scope.list.items.length && !found; i++)
         {
@@ -118,40 +166,11 @@ angular.module('listShare.controllers', [])
             found = true;
           }
         }
+        if(!found)
+        {
+          $scope.list.items.push(data.item);
+        }
       });
-
-    // function singleListener(data){
-    //   console.log("Single Item");
-    //   var found = false;
-    //   console.log($scope.list.items);
-    //   for(var i=0; i < $scope.list.items.length && !found; i++)
-    //   {
-    //     //console.log(i);
-    //     if($scope.list.items[i].id === data.item.id)
-    //     {
-    //       console.log("Found");
-    //       $scope.list.items.splice(i, 1, data.item);
-    //       found = true;
-    //     }
-    //   }
-    // }
-      // .on('update', function (data) {
-      //   if(data.location === 'lists')
-      //   {
-      //     apiInterface.getLists()
-      //     .then(function(res){
-      //       if (res.data.success)
-      //       {
-      //         Lists.setLists(res.data.data);
-      //         vm.lists = Lists.getAll();
-      //       }
-      //       else {
-      //         console.log(res.data.reason);
-      //       }
-      //
-      //     });
-      //   }
-      // });
 })
 
 .controller('FriendsCtrl', function($scope, CheckLogin) {

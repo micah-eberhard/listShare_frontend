@@ -117,8 +117,25 @@ angular.module('listShare.services', [])
           console.log(err);
         });
     },
+    addRecipient: function(email, list) {
+      return $http.post(apiURL.url + '/lists/addrecipient/'+list.id, {email:email})
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+        });
+    },
     getItems: function(listID) {
       return $http.get(apiURL.url + '/items/' + listID)
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+        });
+    },
+    addItem: function(item) {
+      //console.log(item);
+      return $http.post(apiURL.url + '/items/' + item.list_id, item)
         .then(function(response) {
           return response;
         }, function(err) {
@@ -265,6 +282,28 @@ function buildItemList(lists, i, apiInterface){
     if(itemData.data.success)
     {
       list.items = itemData.data.data;
+
+      list.stats = {};
+      var avgCost = 0;
+      var totalCost = 0;
+      var shareSplit = {};
+
+      for(var k=0; k < list.items.length; k++){
+        if(list.items[k].acquired)
+        {
+          totalCost = totalCost + list.items[k].price;
+        }
+
+        if(shareSplit[list.items[k].acquired])
+          shareSplit[list.items[k].acquired] += list.items[k].price;
+        else if (list.items[k].acquired !== null)
+          shareSplit[list.items[k].acquired] = list.items[k].price;
+      }
+      avgCost = totalCost/list.items.length;
+
+      list.stats.avgCost = avgCost;
+      list.stats.totalCost = totalCost;
+      list.stats.shareSplit = shareSplit;
       //console.log(i);
     }
     else {
