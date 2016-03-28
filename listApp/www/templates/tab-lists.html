@@ -1,6 +1,6 @@
 <ion-view ng-init="LC.verify()" view-title="My Lists">
   <ion-content ng-init="reverse = false; newAdd = false; sortBy='name'">
-    <div class="row">
+    <div class="row mainListOptions">
       <div class="col-md-5 size_25">
         <select class="size_90 topSelect" name="sort" ng-model="sortBy">
           <option value="name">Name</option>
@@ -22,7 +22,7 @@
         <button class="ion-ios-minus-outline addBtn topBtn size_full align_right" ng-show="newAdd" type="button" ng-click="newAdd = !newAdd" name="addBtn"></button>
       </div>
     </div>
-    <div class="row align_center" ng-show="newAdd" ng-init="recipients = []">
+    <div class="row align_center mainListOptionsDropdown" ng-show="newAdd" ng-init="recipients = []">
       <div class="col-md-12 size_full">
         <div class="row">
           <div class="col-md-12 size_full">
@@ -63,11 +63,11 @@
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="list in LC.lists | filter:search | orderBy:sortBy:reverse" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
         <div class="row">
           <div class="col-md-10">
-            <h2>{{list.name}}</h2>
-            <p>
+            <span class="itemHeader"><h2>{{list.name}}</h2></span>
+            <p class="description">
               {{list.dateCreated | date:'medium'}}
             </p>
-            <p>
+            <p class="description">
               Number of Items: {{list.items.length}}
             </p>
           </div>

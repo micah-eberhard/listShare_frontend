@@ -1,17 +1,45 @@
 <ion-view ng-init="FC.verify()" view-title="Friends">
-  <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
-    <p>
-    This is the Ionic starter for tabs-based apps. For other starters and ready-made templates, check out the <a href="http://market.ionic.io/starters" target="_blank">Ionic Market</a>.
-    </p>
-    <p>
-      To edit the content of each tab, edit the corresponding template file in <code>www/templates/</code>. This template is <code>www/templates/tab-dash.html</code>
-    </p>
-    <p>
-    If you need help with your app, join the Ionic Community on the <a href="http://forum.ionicframework.com" target="_blank">Ionic Forum</a>. Make sure to <a href="http://twitter.com/ionicframework" target="_blank">follow us</a> on Twitter to get important updates and announcements for Ionic developers.
-    </p>
-    <p>
-      For help sending push notifications, join the <a href="https://apps.ionic.io/signup" target="_blank">Ionic Platform</a> and check out <a href="http://docs.ionic.io/docs/push-overview" target="_blank">Ionic Push</a>. We also have other services available.
-    </p>
+  <ion-content class="">
+    <div class="row">
+      <div class="col-md-12 size_full">
+        <div class="row">
+          <div class="col-md-12 size_full align_center">
+            Add a friend.
+          </div>
+        </div>
+        <div class="row size_full">
+          <div class="col-md-9 size_75">
+            <input class="align_center size_full" type="text" name="addemail" value="" ng-model="friendEmail" placeholder="Email">
+          </div>
+          <div class="col-md-3 size_25">
+            <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="FC.addFriend(friendEmail)" name="addBtn"></button>
+          </div>
+        </div>
+        <div ng-show="FC.error" class="row size_90 flashError">
+          <div class="col-md-9 size_full">
+            <span >{{FC.error}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row padding">
+      <div class="col-md-12 size_full">
+        <div class="row">
+          <div class="col-md-12 size_full">
+            <ion-list>
+              <ion-item ng-repeat="friend in FC.friendList">
+                <span class="itemHeader">{{friend.firstName}} {{friend.lastName}}</span>
+                <p class="description">
+                  {{friend.email}}
+                </p>
+                <ion-option-button class="button-assertive" ng-click="">
+                  Delete
+                </ion-option-button>
+              </ion-item>
+            </ion-list>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

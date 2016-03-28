@@ -7,14 +7,14 @@
           <div class="col-md-12 size_full">
             <div class="row tabHeader">
               <div class="col-md-4 size_33 align_center">
-                <a href="" ng-click="showTab='Items'">Items</a>
+                <a href="" ng-click="showTab='Items'; LDC.resetError()">Items</a>
               </div>
               <div class="col-md-4 size_33 align_center">
-                <a href="" ng-click="showTab='Recipients'">Recipients</a>
+                <a href="" ng-click="showTab='Recipients'; LDC.resetError()">Recipients</a>
 
               </div>
               <div class="col-md-4 size_33 align_center">
-                <a href="" ng-click="showTab='Statistics'">Statistics</a>
+                <a href="" ng-click="showTab='Statistics'; LDC.resetError()">Statistics</a>
 
               </div>
             </div>
@@ -53,9 +53,15 @@
                 <div class="row size_full">
                   <div class="col-md-9 size_75">
                     <input class="align_center size_full" type="text" name="addemail" value="" ng-model="recipientEmail" placeholder="Email">
+                    <select2 ng-model="obj.field" s2-options="val.id as val.firstName for val in LDC.getFriends()"></select2>
                   </div>
                   <div class="col-md-3 size_25">
                     <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addRecipient(recipientEmail, list)" name="addBtn"></button>
+                  </div>
+                </div>
+                <div ng-show="LDC.error" class="row size_90 flashError">
+                  <div class="col-md-9 size_full">
+                    <span >{{LDC.error}}</span>
                   </div>
                 </div>
               </div>
@@ -73,13 +79,12 @@
           </div>
         </div>
         <div class="row dropArrow">
-          <div class="col-md-12 size_full  align_center" ng-click="dropDown = !dropDown">
+          <div class="col-md-12 size_full  align_center" ng-click="dropDown = !dropDown; LDC.resetError()">
             <span class="ion-ios-arrow-down"></span>
           </div>
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-6 size_50">
         <input class="align_center inline" type="text" name="searchItem" ng-model="searchItem" value="" placeholder="Search">
@@ -127,8 +132,8 @@
 
         <div class="row">
           <div class="col-md-3 size_25">
-            {{item.name}}
-            <p>
+            <span class="itemHeader">{{item.name}}</span>
+            <p class="description">
               {{item.category}}
             </p>
           </div>

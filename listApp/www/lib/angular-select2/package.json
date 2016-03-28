@@ -1,0 +1,47 @@
+{
+  "name": "angular-select2",
+  "version": "1.4.3",
+  "description": "Select2 directive for Angular.js",
+  "main": "dist/angular-select2.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt ci",
+    "prepublish": "grunt build"
+  },
+  "keywords": [
+    "angular",
+    "select2"
+  ],
+  "author": {
+    "name": "Ruben Vermeersch",
+    "email": "ruben@rocketeer.be",
+    "url": "http://rocketeer.be/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-bump": "0.0.13",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-connect": "~0.7.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-jscs": "^0.6.2",
+    "grunt-ng-annotate": "^0.3.2",
+    "grunt-protractor-runner": "1.1.4",
+    "grunt-sauce-tunnel": "^0.2.0",
+    "grunt-shell": "^0.6.4",
+    "open-sauce-browsers": "git://github.com/rubenv/open-sauce-browsers",
+    "protractor": "~1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rubenv/angular-select2.git"
+  },
+  "jspm": {
+    "main": "dist/angular-select2"
+  }
+}

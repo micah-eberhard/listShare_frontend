@@ -152,6 +152,28 @@ angular.module('listShare.services', [])
           console.log(err);
         });
     },
+    addFriend: function(email) {
+      //console.log(item);
+      return $http.post(apiURL.url + '/friends/', {email:email})
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+          //err.success = false;
+          //return err;
+        });
+    },
+    getFriends: function() {
+      //console.log(item);
+      return $http.get(apiURL.url + '/friends')
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+          //err.success = false;
+          //return err;
+        });
+    },
     deleteList: function(id) {
       return $http.delete(apiURL.url + '/lists/'+id)
         .then(function(response) {
@@ -161,6 +183,29 @@ angular.module('listShare.services', [])
         });
     }
   };
+})
+
+.service('friendService', function(apiInterface){
+  var friendList = [];
+
+  return {
+    get : function(){
+      return friendList;
+    },
+    refresh : function(){
+      return apiInterface.getFriends()
+        .then(function(res){
+          if(res.data.success)
+          {
+            friendList = res.data.data;
+            return {success:true};
+          }
+          else {
+            return {success:false};
+          }
+        })
+    }
+  }
 })
 
 .factory('Lists', function(apiInterface) {

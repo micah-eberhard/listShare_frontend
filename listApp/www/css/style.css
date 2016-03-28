@@ -10,18 +10,31 @@ select{
   margin: .1rem;
 }
 .holder {
+  /*
+  z-index: 999999;
+  position: fixed;
+  top: 44px;
+  */
   margin: 0;
   margin-bottom: .5rem;
   padding: 0;
 }
 .navBG_list{
-  background: rgb(64, 64, 64);
+  background: rgb(66, 107, 149);
 }
 .navBG_friends{
-  background: rgb(64, 64, 64);
+  background: rgb(66, 107, 149);
 }
 .navBG_account{
-  background: rgb(64, 64, 64);
+  background: rgb(66, 107, 149);
+}
+
+/*Friends */
+.flashError{
+  padding: .4rem;
+  background: rgba(236, 103, 103, 0.5);
+  border-radius: .5rem;
+  border: .1rem solid rgb(85, 29, 29);
 }
 
 
@@ -39,13 +52,24 @@ select{
   background: linear-gradient(#11c1f3, rgb(232, 243, 251));
   height: 11rem;
 }
+.description{
+  font-style: italic;
+}
+.itemHeader{
+  font-weight: 600;
+}
 
 /* Tabs */
 .tabHeader{
   border-bottom: .1rem solid grey;
 }
 
-
+.mainListOptions{
+  background-color: #11c1f3;
+}
+.mainListOptionsDropdown{
+  background: linear-gradient(#11c1f3, rgb(232, 243, 251));
+}
 .addRecipient{
   height: 1.5rem !important;
 }
@@ -61,7 +85,7 @@ select{
 .detailAdd{
   margin-top: -.25rem;
   margin-left: 1rem;
-  font-size: 3rem;
+  font-size: 2rem;
   color: #275675;
 }
 .topBtn{

@@ -113,19 +113,29 @@ angular.module('listShare.controllers', [])
   }
 })
 
-.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin, socketService, apiInterface) {
+.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin, socketService, apiInterface, friendService) {
   var vm = this;
   vm.verify = CheckLogin.check;
   $scope.list = Lists.get($stateParams.listId);
+  vm.resetError = function(){
+    delete vm.error;
+  };
+  vm.getFriends = function(){
+    return friendService.get();
+  };
 
   vm.addItem = function(item)
   {
     apiInterface.addItem(item)
     .then(function(res){
+      delete vm.error;
       if(res.data.success)
         console.log("Item Added");
       else
+      {
+        vm.error = res.data.reason;
         console.log("Item failed to add.");
+      }
     });
   };
   vm.updateItem = function(item){
@@ -138,11 +148,13 @@ angular.module('listShare.controllers', [])
     {
       apiInterface.addRecipient(email, list)
       .then(function(res){
+        delete vm.error;
         if(res.data.success)
         {
           console.log("Added " + email);
         }
         else {
+          vm.error = res.data.reason;
           console.log("Failed to add " + email);
         }
       });
@@ -162,20 +174,56 @@ angular.module('listShare.controllers', [])
           if($scope.list.items[i].id === data.item.id)
           {
             console.log("Found");
-            $scope.list.items.splice(i, 1, data.item);
+            //$scope.list.items.splice(i, 1, data.item);
+            $scope.list.items[i].name = data.item.name;
+            $scope.list.items[i].amount = data.item.amount;
+            $scope.list.items[i].price = data.item.price;
+            $scope.list.items[i].searching = data.item.searching;
+            $scope.list.items[i].acquired = data.item.acquired;
+            $scope.list.items[i].category = data.item.category;
             found = true;
           }
         }
-        if(!found)
+        if(!found && $scope.list.id === data.id)
         {
           $scope.list.items.push(data.item);
         }
       });
 })
 
-.controller('FriendsCtrl', function($scope, CheckLogin) {
+.controller('FriendsCtrl', function($scope, CheckLogin, apiInterface, friendService) {
   var vm = this;
   vm.verify = CheckLogin.check;
+  vm.friendList = [];
+
+  vm.addFriend = function(email){
+    apiInterface.addFriend(email)
+    .then(function(res){
+      delete vm.error;
+      if(res.data.success)
+      {
+        vm.refreshFriends();
+      }
+      else
+      {
+        vm.error = res.data.reason;
+        console.log(res.data.reason);
+      }
+    });
+  };
+  vm.refreshFriends = function(){
+    friendService.refresh()
+    .then(function(res){
+      if(res.success)
+        vm.friendList = friendService.get();
+    });
+  };
+
+  vm.friendList = friendService.get();
+  if(vm.friendList.length <= 0)
+    vm.refreshFriends();
+
+
 })
 
 .controller('AccountCtrl', function($scope, $location, $state, CheckLogin, authService, socketService) {
