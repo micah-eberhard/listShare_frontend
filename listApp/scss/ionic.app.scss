@@ -15,25 +15,222 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+$lightBlue: #afe5fa !default;
+$positive: #2998c2  !default;
+$energized: #ffc900 !default;
+$darkerBlue: rgb(66, 107, 149) !default;
+$linkColor: #286ada !default;
+$shadowColor: rgba(0, 0, 0, 0.92) !default;
+$lightGrey: rgb(136, 136, 136) !default;
+$dark: $dark;
+
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
-.bar.bar-header {
-  background: $darkturquoise;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+.dark_gradient{
+  background: linear-gradient($dark, $lightGrey) !important;
+  box-shadow: 2px 2px 2px 1px $shadowColor;
+}
+/* Custom CSS */
+ion-content{
+  background: linear-gradient($lightBlue, rgb(232, 243, 251));
+}
+ion-item{
+  margin: .2rem !important;
+}
+input{
+  border: .1rem solid grey !important;
+  border-radius: 1rem;
+  margin: .1rem;
+}
+select{
+  border: .1rem solid grey !important;
+  border-radius: 1rem;
+  margin: .1rem;
+}
+.holder {
+  /*
+  z-index: 999999;
+  position: fixed;
+  top: 44px;
+  */
+  margin: 0;
+  margin-bottom: .5rem;
+  padding: 0;
+}
+.headerImg{
+  text-align: center;
+  height: 1.6rem;
+  width: auto;
+  z-index: 999999;
+  position: fixed;
+  right: 0;
+  margin-top: .5rem;
+}
+.navBG_list{
+  color: white !important;
+  background: $darkerBlue;
+}
+.navBG_friends{
+  color: white !important;
+  background: $darkerBlue;
+}
+.navBG_account{
+  color: white !important;
+  background: $darkerBlue;
 }
 
-.navBG{
-  background-color: $darkturquoise;
+/*Friends */
+.flashError{
+  padding: .4rem;
+  background: rgba(236, 103, 103, 0.5);
+  border-radius: .5rem;
+  border: .1rem solid rgb(85, 29, 29);
 }
 
-.tab-nav.tabs {
-  background: $darkturquoise;
+
+
+/* List Details */
+.dropArrow{
+  background: linear-gradient(rgb(255, 255, 255), $darkerBlue);
+  box-shadow: 2px 2px 2px 1px $shadowColor;
+  border-bottom: .1rem solid grey;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  height: .4rem;
+  margin-bottom: 1rem;
+}
+.dropArrowColor{
+  color: $darkerBlue;
+  font-size: 2.5rem;
+}
+.listSettings{
+  background: linear-gradient($lightBlue, rgb(232, 243, 251));
+  height: 11rem;
+}
+.description{
+  font-style: italic;
+}
+.itemHeader{
+  font-weight: 600;
 }
 
-.nav-lists {
-  background: $darkturquoise;
+/* Tabs */
+.tabHeader{
+  border-bottom: .1rem solid grey;
+}
+
+.mainListOptions{
+  background-color: $lightBlue;
+}
+.mainListOptionsDropdown{
+  background: linear-gradient($lightBlue, rgb(232, 243, 251));
+}
+.addRecipient{
+  height: 1.5rem !important;
+}
+.topSelect{
+  margin-top: .3rem;
+}
+.addBtn{
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 1rem;
+}
+.detailAdd{
+  margin-top: -.25rem;
+  margin-left: 1rem;
+  font-size: 2rem;
+  color: #275675;
+}
+.topBtn{
+  margin-top: -.55rem;
+  font-size: 2rem;
+}
+.recipientBtn{
+  font-size: 1.2rem;
+}
+.clear{
+  border: none !important;
+  padding: none !important;
+  background: none !important;
+  background-color: none !important;
+}
+.slider{
+  margin-top: -.2rem;
+  margin-left: -.2rem;
+}
+.align_center{
+  text-align: center;
+}
+.align_right{
+  text-align: right;
+}
+.align_left{
+  text-align: left;
+}
+.size_full{
+  width: 100%;
+}
+.size_90{
+  width: 90%;
+}
+.size_80{
+  width: 80%;
+}
+.size_75{
+  width: 75%;
+}
+.size_60{
+  width: 60%;
+}
+.size_50{
+  width: 50%;
+}
+.size_40{
+  width: 40%;
+}
+.size_33{
+  width: 33%;
+}
+.size_30{
+  width: 30%;
+}
+.size_25{
+  width: 25%;
+}
+.size_20{
+  width: 20%;
+}
+.size_15{
+  width: 10%;
+}
+.size_10{
+  width: 10%;
+}
+.size_5{
+  width: 5%;
+}
+.inline{
+  display: inline-block;
+}
+a:active{
+  color: $linkColor;
+}
+a:visited{
+  color: $linkColor;
+}
+a:link{
+  color: $linkColor;
+}
+a:hover{
+  color: $darkerBlue;
+}
+a{
+  text-decoration: none;
 }

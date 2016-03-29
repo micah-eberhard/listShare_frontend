@@ -47,6 +47,11 @@ select{
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
   height: .4rem;
+  margin-bottom: 1rem;
+}
+.dropArrowColor{
+  color: rgb(41, 85, 121);
+  font-size: 2.5rem;
 }
 .listSettings{
   background: linear-gradient(#11c1f3, rgb(232, 243, 251));
