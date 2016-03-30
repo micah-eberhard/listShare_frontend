@@ -307,7 +307,11 @@ angular.module('listShare.controllers', [])
             }
             else{
               //$scope.list.items.splice(i, 1, data.item);
+              // console.log("Push Update: ");
+              // console.log(data);
+
               $scope.list.items[i].name = data.item.name;
+              $scope.list.items[i].list_id = data.item.list_id; // <----- or below, missing data
               $scope.list.items[i].amount = data.item.amount;
               $scope.list.items[i].price = data.item.price;
               $scope.list.items[i].searching = data.item.searching;
@@ -347,7 +351,7 @@ angular.module('listShare.controllers', [])
   {
 // $scope.remove_padding = "padding-bottom:0px !important;";
     vm.isVisible = true;
-    console.log("Fire");
+    // console.log("Fire");
   });
 
   vm.removeFriend = function(friend){

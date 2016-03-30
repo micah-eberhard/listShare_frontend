@@ -144,7 +144,7 @@ angular.module('listShare.services', [])
     },
     updateItem: function(item) {
 
-      //console.log(item);
+      // console.log(item);
       return $http.post(apiURL.url + '/items/' + item.list_id + '/' + item.id, item)
         .then(function(response) {
           return response;

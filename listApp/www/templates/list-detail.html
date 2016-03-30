@@ -168,11 +168,11 @@
           </div>
           <div class="col-md-12 size_full" ng-show="LDC.showEdit.id === item.id">
             <div class="row">
-              <div class="col-md-6 size_50 align_left" ng-show="LDC.showEdit.id === item.id">
+              <div class="col-md-6 size_50 align_left" ng-show="LDC.showEdit.id === item.id"
                 <label for="name">Name: </label>
               </div>
               <div class="col-md-6 size_50 align_center" ng-show="LDC.showEdit.id === item.id">
-                <input class="description align_center smallInput" type="text" name="name" value="{{item.name}}" placeholder="Name">
+                <input class="description align_center smallInput" ng-model="hold.editName" type="text" name="name"  placeholder="Name">
               </div>
             </div>
             <div class="row">
@@ -180,7 +180,7 @@
                 <label for="name">Category: </label>
               </div>
               <div class="col-md-6 size_50 align_center" ng-show="LDC.showEdit.id === item.id">
-                <input class="description align_center smallInput" type="text" name="category" value="{{item.category}}" placeholder="Category">
+                <input class="description align_center smallInput" ng-model="hold.editCategory" type="text" name="category"  placeholder="Category">
               </div>
             </div>
             <div class="row">
@@ -188,7 +188,7 @@
                 <label for="name">Amount: </label>
               </div>
               <div class="col-md-6 size_50 align_center" ng-show="LDC.showEdit.id === item.id">
-                <input class="description align_center smallInput" type="text" name="amount" value="{{item.amount}}" placeholder="Amount">
+                <input class="description align_center smallInput" ng-model="hold.editAmount" type="number" name="amount" placeholder="Amount">
               </div>
             </div>
             <div class="row">
@@ -196,7 +196,7 @@
                 <label for="name">Price: </label>
               </div>
               <div class="col-md-6 size_50 align_center" ng-show="LDC.showEdit.id === item.id">
-                <input class="description align_center smallInput" type="text" name="price" value="{{item.price}}" placeholder="Price">
+                <input class="description align_center smallInput" ng-model="hold.editPrice" type="number" name="price" placeholder="Price">
               </div>
             </div>
             <div class="row">
@@ -204,7 +204,7 @@
                 <label for="name">Comments: </label>
               </div>
               <div class="col-md-6 size_50 align_center" ng-show="LDC.showEdit.id === item.id">
-                <input class="description align_center smallInput" type="text" name="description" value="{{item.comments}}" placeholder="Comments">
+                <input class="description align_center smallInput" ng-model="hold.editComments" type="text" name="comments" placeholder="Comments">
               </div>
             </div>
 
@@ -217,7 +217,7 @@
             {{item.amount}} oz
           </div>
           <div class="col-md-1 size_20" ng-show="LDC.showEdit.id !== item.id" ng-init="item.searching_mark = (item.searching > 0)">
-            <ion-checkbox ng-disabled="(item.acquired > 0 || item.acquired_mark)" class="clear checkItem"  ng-checked="item.searching > 0" ng-model="item.searching_mark" ng-change="item.changed = {searching:item.searching_mark}; LDC.updateItem(item)">
+            <ion-checkbox ng-disabled="(item.acquired > 0)" class="clear checkItem"  ng-checked="item.searching > 0" ng-model="item.searching_mark" ng-change="item.changed = {searching:item.searching_mark}; LDC.updateItem(item)">
             </ion-checkbox>
           </div>
           <div class="col-md-1 size_5" ng-show="LDC.showEdit.id !== item.id" ng-init="item.acquired_mark = (item.acquired > 0)">
@@ -233,14 +233,14 @@
           <div class="col-md-6 size_full">
             <div class="row">
               <div class="col-md-12 size_full align_right">
-                <button class="ion-ios-close addBtn recipientBtn align_right" type="button" ng-click="LDC.showEdit={};" name="editSubBtn"> Cancel</button>
+                <button class="ion-ios-close addBtn recipientBtn align_right" type="button" ng-click="LDC.showEdit={}; hold = {};" name="editSubBtn"> Cancel</button>
               </div>
             </div>
           </div>
           <div class="col-md-6 size_full">
             <div class="row">
               <div class="col-md-12 size_full align_right">
-                <button class="ion-checkmark-round addBtn recipientBtn align_right" type="button" ng-click="LDC.updateItem(item); LDC.showEdit={};" name="editSubBtn"> Done</button>
+                <button class="ion-checkmark-round addBtn recipientBtn align_right" type="button" ng-click="item.name = hold.editName; item.category = hold.editCategory; item.amount = hold.editAmount; item.price = hold.editPrice; item.comments = hold.editComments; LDC.updateItem(item); LDC.showEdit={};" name="editSubBtn"> Done</button>
               </div>
             </div>
           </div>
@@ -248,7 +248,7 @@
 
 
 
-        <ion-option-button class="button-calm" ng-click="LDC.showEdit=(item); LDC.resetOptions()">
+        <ion-option-button class="button-calm" ng-click="hold.editName = item.name; hold.editCategory = item.category; hold.editAmount = item.amount; hold.editPrice = item.price; hold.editComments = item.comments; LDC.showEdit=(item); LDC.resetOptions()">
           Edit
         </ion-option-button>
         <ion-option-button class="button-assertive" ng-click="LDC.deleteItem(item)">
