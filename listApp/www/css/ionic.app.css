@@ -9731,6 +9731,18 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.topHeader {
+  word-wrap: break-word !important;
+  font-size: .8rem;
+  border-top: 0.1rem solid rgba(66, 107, 149, 0.46); }
+
+.developerInfo {
+  z-index: 0;
+  color: rgba(66, 107, 149, 0.46);
+  margin: 0 auto;
+  position: absolute;
+  bottom: 3rem; }
+
 .element.ng-hide {
   display: none; }
 

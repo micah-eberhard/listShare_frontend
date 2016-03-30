@@ -34,7 +34,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
-
+.topHeader{
+  font-size: .8rem;
+  border-top: .1rem solid $darkerBlueTrans;
+}
+.developerInfo{
+  z-index: 0;
+  color: $darkerBlueTrans;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 3rem;
+}
 .element.ng-hide{
   display:none;
 }

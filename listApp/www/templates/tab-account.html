@@ -1,17 +1,17 @@
-<ion-view ng-init="AC.showProfile = AC.verify()" view-title="Account">
+<ion-view ng-init="AC.showProfile = AC.verify(); AC.signup = false" view-title="Account">
   <ion-content>
     <div class="bar bar-loading" ng-class="{'bar-assertive' : (data.error), 'bar-balanced' : (data.success)}" ng-if="data.flash">
       {{data.text}}
     </div>
   <img class="accntBanner" src="./img/ListShareBanner.png" alt="" />
-    <div class="row" ng-hide="AC.showProfile" ng-init="signup = false">
+    <div class="row" ng-hide="AC.showProfile">
       <div class="col-md-1 size_20">
 
       </div>
       <div class="col-md-10 align_center size_full" ng-hide="AC.signup">
         <p>
           <label for="email">Email</label>
-          <input class="align_center size_full" ng-model="LI_email" type="text" name="email" placeholder="Email" value="">
+          <input class="align_center size_full" ng-model="LI_email" type="email" name="email" placeholder="Email" value="">
         </p>
         <p>
           <label for="password">Password</label>
@@ -27,7 +27,7 @@
       <div class="col-md-10 align_center size_full" ng-show="AC.signup">
         <p>
           <label for="email">Email</label>
-          <input class="align_center size_full" ng-model="SU_email" type="text" name="email" placeholder="Email" value="">
+          <input class="align_center size_full" ng-model="SU_email" type="email" name="email" placeholder="Email" value="">
         </p>
         <p>
           <label for="password">Password</label>
@@ -61,5 +61,15 @@
     </div>
 
   </ion-content>
-
+  <div class="developerInfo description size_full" ng-show="!AC.signup">
+    <p class="align_center">
+      Developed by Micah Eberhard
+    </p>
+    <p class="align_center">
+      micah.eberhard@gmail.com
+    </p>
+    <p class="align_center">
+      (970) 227-0405
+    </p>
+  </div>
 </ion-view>

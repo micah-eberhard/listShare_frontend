@@ -228,6 +228,22 @@
             <i class="icon ion-chevron-right icon-accessory"></i>
           </div>
         </div>
+        <div class="row" ng-class="{'topHeader':(item.comments || item.price)}" ng-show="LDC.showEdit.id !== item.id && (item.comments || item.price)">
+          <div class="col-md-10 size_80">
+            <div class="row">
+              <div class="col-md-12 size_full align_left description" ng-show="item.comments">
+                {{item.comments}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 size_20">
+            <div class="row">
+              <div class="col-md-12 size_full align_right description" ng-show="item.price">
+                {{item.price | currency : $ : 2}}
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="row itemEditor" ng-show="LDC.showEdit.id === item.id">
           <div class="col-md-6 size_full">
