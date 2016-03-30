@@ -54,6 +54,9 @@ input{
   border-radius: .5rem;
   margin: .1rem;
 }
+.smallInput{
+  height: 1.3rem !important;
+}
 select{
   //border: .1rem solid grey !important;
   border-radius: .5rem;
@@ -225,6 +228,9 @@ select{
   margin-top: 2rem;
 }
 
+.block{
+  display: block !important;
+}
 .clear{
   border: none !important;
   padding: none !important;

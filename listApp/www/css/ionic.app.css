@@ -9750,6 +9750,9 @@ input {
   border-radius: .5rem;
   margin: .1rem; }
 
+.smallInput {
+  height: 1.3rem !important; }
+
 select {
   border-radius: .5rem;
   margin: .1rem; }
@@ -9901,6 +9904,9 @@ select {
 
 .pushDown {
   margin-top: 2rem; }
+
+.block {
+  display: block !important; }
 
 .clear {
   border: none !important;
