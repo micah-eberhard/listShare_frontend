@@ -1,5 +1,6 @@
 <ion-view ng-init="AC.showProfile = AC.verify()" view-title="Account">
   <ion-content>
+      <img class="accntBanner" src="./img/ListShareBanner.png" alt="" />
     <div class="row" ng-hide="AC.showProfile" ng-init="signup = false">
       <div class="col-md-1 size_20">
 
@@ -14,7 +15,7 @@
           <input class="align_center size_full" ng-model="LI_password" type="password" name="password" placeholder="Password" value="">
         </p>
         <p>
-          <button type="button" name="loginBtn" ng-click="AC.login(LI_email, LI_password)">Log In</button>
+          <button class="authBtn button button-block button-positive" type="button" name="loginBtn" ng-click="AC.login(LI_email, LI_password)">Log In</button>
         </p>
         <p>
           <a href="#" ng-click="signup = !signup">Need to Sign Up?</a>
@@ -23,22 +24,22 @@
       <div class="col-md-10 align_center size_full" ng-show="signup">
         <p>
           <label for="email">Email</label>
-          <input class="align_center size_full" ng-model="SU_email" type="text" name="email" placeholder="email" value="">
+          <input class="align_center size_full" ng-model="SU_email" type="text" name="email" placeholder="Email" value="">
         </p>
         <p>
           <label for="password">Password</label>
-          <input class="align_center size_full" ng-model="SU_password" type="password" name="password" placeholder="password" value="">
+          <input class="align_center size_full" ng-model="SU_password" type="password" name="password" placeholder="Password" value="">
         </p>
         <p>
           <label for="firstName">First Name</label>
-          <input class="align_center size_full" ng-model="SU_fname" type="text" name="firstName" placeholder="first name" value="">
+          <input class="align_center size_full" ng-model="SU_fname" type="text" name="firstName" placeholder="First Name" value="">
         </p>
         <p>
           <label for="lastName">Last Name</label>
-          <input class="align_center size_full" ng-model="SU_lname" type="text" name="lastName" placeholder="last name" value="">
+          <input class="align_center size_full" ng-model="SU_lname" type="text" name="lastName" placeholder="Last Name" value="">
         </p>
         <p>
-          <button type="button" name="signupBtn" ng-click="AC.register(SU_email, SU_password, SU_fname, SU_lname); signup=false">Sign Up</button>
+          <button class="authBtn button button-block button-positive" type="button" name="signupBtn" ng-click="AC.register(SU_email, SU_password, SU_fname, SU_lname); signup=false">Sign Up</button>
         </p>
         <p>
           <a href="#" ng-click="signup = !signup">Need to Log In?</a>
@@ -48,15 +49,14 @@
 
       </div>
     </div>
-    <ion-list ng-show="AC.showProfile">
-    <ion-toggle  ng-model="AC.settings.enableFriends">
-        Enable Email Notifications
-    </ion-toggle>
-    <ion-toggle  ng-model="AC.settings.enablePush">
-        Enable Push Notifications
-    </ion-toggle>
-    <button type="button" ng-click="AC.logout()" name="button">Log Out</button>
-    </ion-list>
+
+    <div ng-show="AC.showProfile" class="row size_full">
+      <div class="col-md-12 size_full">
+        <button class="authBtn button button-block button-positive" type="button" ng-click="AC.logout()" name="button">Log Out</button>
+
+      </div>
+    </div>
 
   </ion-content>
+
 </ion-view>

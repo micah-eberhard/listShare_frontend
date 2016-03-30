@@ -13,12 +13,14 @@
               <input class="align_center size_full" type="email" name="addEmail" value="" ng-model="friendEmail" placeholder="Email">
             </div>
             <div class="col-md-3 size_25">
-              <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="FC.addFriend(friendEmail)" name="addBtn"></button>
+              <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="FC.addFriend(friendEmail); friendEmail=''" name="addBtn"></button>
             </div>
           </div>
           <div ng-show="addFriend_form.$submitted || addFriend_form.addEmail.$touched">
-  					<span ng-show="addFriend_form.addEmail.$error.required" class="flashError">This is a required field.</span>
-            <span ng-show="addFriend_form.addEmail.$error.email" class="flashError">Not a valid email.</span>
+            <p>
+              <span ng-show="addFriend_form.addEmail.$error.required" class="flashError">This is a required field.</span>
+              <span ng-show="addFriend_form.addEmail.$error.email" class="flashError">Not a valid email.</span>
+            </p>
   		    </div>
           <div ng-show="FC.error" class="row size_90 flashError">
             <div class="col-md-9 size_full">
@@ -33,11 +35,20 @@
         <div class="row">
           <div class="col-md-12 size_full">
             <ion-list>
-              <ion-item ng-repeat="friend in FC.friendList">
-                <span class="itemHeader">{{friend.firstName}} {{friend.lastName}}</span>
-                <p class="description">
-                  {{friend.email}}
-                </p>
+              <ion-item ng-repeat="friend in FC.friendList" class="item-remove-animate item-icon-right basicRound basicShadow">
+                <div class="row">
+                  <div class="col-md-11 size_full">
+                    <span class="itemHeader">{{friend.firstName}} {{friend.lastName}}</span>
+                    <p class="description">
+                      {{friend.email}}
+                    </p>
+                  </div>
+                  <div class="col-md-1 size_5">
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                  </div>
+                </div>
+
+
                 <ion-option-button class="button-assertive" ng-click="FC.removeFriend(friend)">
                   Delete
                 </ion-option-button>

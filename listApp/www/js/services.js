@@ -152,6 +152,16 @@ angular.module('listShare.services', [])
           console.log(err);
         });
     },
+    deleteItem: function(item) {
+
+      //console.log(item);
+      return $http.delete(apiURL.url + '/items/' + item.id)
+        .then(function(response) {
+          return response;
+        }, function(err) {
+          console.log(err);
+        });
+    },
     addFriend: function(email) {
       //console.log(item);
       return $http.post(apiURL.url + '/friends/', {email:email})

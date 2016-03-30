@@ -29,7 +29,8 @@ angular.module('listShare.controllers', [])
         lengthCheck = 0;
         for(var i=0; i < recipients.length; i++)
         {
-          apiInterface.addRecipient(recipients[i], parseInt(res.data.id))
+          console.log(res.data);
+          apiInterface.addRecipient(recipients[i], res.data)
           .then(function(addRes){
             if(addRes.data.success)
             {
@@ -41,7 +42,7 @@ angular.module('listShare.controllers', [])
               vm.errorList.push(addRes.data.reason);
               lengthCheck ++;
             }
-            if(lengthCheck == lengthHold)
+            if(lengthCheck === lengthHold)
             {
               console.log("Errors: ");
               console.log(vm.errorList);
@@ -152,10 +153,10 @@ angular.module('listShare.controllers', [])
   vm.friendList = friendService.get();
   vm.tempFriends = [];
 
-  vm.checkLog = function(str)
-  {
-    console.log(str);
-  };
+  // vm.checkLog = function(str)
+  // {
+  //   console.log(str);
+  // };
 
   vm.resetError = function(){
     delete vm.error;
@@ -166,7 +167,6 @@ angular.module('listShare.controllers', [])
 
   vm.searchFriends = function(friendCheck)
   {
-    console.log("Fire");
     var friends = friendService.get();
     vm.tempFriends = [];
     for(var i=0; i < friends.length; i++)
@@ -174,7 +174,7 @@ angular.module('listShare.controllers', [])
       var match = true;
       for(var j=0; j < friendCheck.length && match; j++)
       {
-        if(friendCheck[j] !== friends[i].email[j])
+        if(friendCheck[j].toLowerCase() !== friends[i].email[j].toLowerCase())
         {
           match = false;
         }
@@ -201,6 +201,12 @@ angular.module('listShare.controllers', [])
   vm.updateItem = function(item){
     Lists.updateItem(item);
     };
+  vm.deleteItem = function(item){
+    apiInterface.deleteItem(item)
+    .then(function(res){
+      console.log(res);
+    });
+  };
 
     vm.addRecipient = recipientHandler;
 
@@ -234,17 +240,23 @@ angular.module('listShare.controllers', [])
           if($scope.list.items[i].id === data.item.id)
           {
             console.log("Found");
-            //$scope.list.items.splice(i, 1, data.item);
-            $scope.list.items[i].name = data.item.name;
-            $scope.list.items[i].amount = data.item.amount;
-            $scope.list.items[i].price = data.item.price;
-            $scope.list.items[i].searching = data.item.searching;
-            $scope.list.items[i].acquired = data.item.acquired;
-            $scope.list.items[i].category = data.item.category;
+            if(data.item.delete)
+            {
+              $scope.list.items.splice(i, 1);
+            }
+            else{
+              //$scope.list.items.splice(i, 1, data.item);
+              $scope.list.items[i].name = data.item.name;
+              $scope.list.items[i].amount = data.item.amount;
+              $scope.list.items[i].price = data.item.price;
+              $scope.list.items[i].searching = data.item.searching;
+              $scope.list.items[i].acquired = data.item.acquired;
+              $scope.list.items[i].category = data.item.category;
+            }
             found = true;
           }
         }
-        if(!found && $scope.list.id === data.id)
+        if(!found && $scope.list.id === data.id && !data.delete)
         {
           $scope.list.items.push(data.item);
         }
@@ -280,7 +292,7 @@ angular.module('listShare.controllers', [])
       delete vm.error;
       if(res.data.success)
       {
-        vm.refreshFriends();
+        vm.refreshFriends(res.data.friend_id);
       }
       else
       {
@@ -289,17 +301,33 @@ angular.module('listShare.controllers', [])
       }
     });
   };
-  vm.refreshFriends = function(){
+  vm.refreshFriends = function(friend_id){
     friendService.refresh()
     .then(function(res){
       if(res.success)
-        vm.friendList = friendService.get();
+      {
+        if(friend_id)
+        {
+          var newList = friendService.get();
+          for(var i=0; i < newList.length; i++)
+          {
+            if(newList[i].friend_id === friend_id)
+              vm.friendList.push(newList[i]);
+          }
+        }
+        else {
+          vm.friendList = friendService.get();
+        }
+      }
     });
   };
 
   vm.friendList = friendService.get();
   if(vm.friendList.length <= 0)
+  {
     vm.refreshFriends();
+
+  }
 
 
 })

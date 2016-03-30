@@ -1,6 +1,6 @@
 <ion-view ng-init="LC.verify()" view-title="My Lists">
   <ion-content ng-init="reverse = false; newAdd = false; sortBy='name'">
-    <div class="row mainListOptions">
+    <div class="row mainListOptions basicLowBorder">
       <div class="col-md-5 size_25">
         <select class="size_90 topSelect" name="sort" ng-model="sortBy">
           <option value="name">Name</option>
@@ -59,13 +59,19 @@
         </div>
       </div>
     </div>
+    <div class="row size_full" ng-show="LC.lists.length <= 0 && !newAdd" >
+      <div class="col-md-12 size_full align_center">
+        <span class="description align_center fadeDown pushDown">You have no lists. Click the + above to get started.</span>
+      </div>
+    </div>
+
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right"  ng-repeat="list in LC.lists | filter:search | orderBy:sortBy:reverse" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
+      <ion-item class="item-remove-animate item-icon-right basicRound basicShadow"  ng-repeat="list in LC.lists | filter:search | orderBy:sortBy:reverse" type="item-text-wrap" href="#/tab/lists/{{list.id}}">
         <div class="row">
           <div class="col-md-10">
             <span class="itemHeader">{{list.name}}</span>
             <p class="description">
-              {{list.dateCreated | date:'medium'}}
+              {{list.dateCreated | date:'short'}}
             </p>
             <p class="description">
               Number of Items: {{list.items.length}}

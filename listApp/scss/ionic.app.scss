@@ -17,12 +17,16 @@ $dark:                            #444 !default;
 
 $lightBlue: #afe5fa !default;
 $positive: #2998c2  !default;
-$energized: #ffc900 !default;
+$energized: #e9bd18 !default;
 $darkerBlue: rgb(66, 107, 149) !default;
 $linkColor: #286ada !default;
 $shadowColor: rgba(0, 0, 0, 0.92) !default;
+$shadowColorSoft: rgba(0, 0, 0, 0.55) !default;
 $lightGrey: rgb(136, 136, 136) !default;
-$dark: $dark;
+$titleTrans: rgba(66, 107, 149, 0.35) !default;
+$darkerBlueTrans: rgba(66, 107, 149, 0.46) !default;
+$transparentGrey: rgba(136, 136, 136, 0.18) !default;
+//$dark: $dark !default;
 
 
 // The path for our ionicons font files, relative to the built CSS in www/css
@@ -32,7 +36,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 .dark_gradient{
-  background: linear-gradient($dark, $lightGrey) !important;
+  background: linear-gradient($positive, $darkerBlue) !important;
   box-shadow: 2px 2px 2px 1px $shadowColor;
 }
 /* Custom CSS */
@@ -40,11 +44,11 @@ ion-content{
   background: linear-gradient($lightBlue, rgb(232, 243, 251));
 }
 ion-item{
-  margin: .2rem !important;
+  margin: .3rem !important;
 }
 input{
   border: .1rem solid grey !important;
-  border-radius: 1rem;
+  border-radius: .5rem;
   margin: .1rem;
 }
 select{
@@ -62,39 +66,59 @@ select{
   margin-bottom: .5rem;
   padding: 0;
 }
+.authBtn{
+
+}
+.accntBanner{
+  padding: 0;
+  margin: 0 auto;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  height: auto;
+  width: 100%;
+}
 .headerImg{
   text-align: center;
-  height: 1.6rem;
+  height: 2.7rem;
   width: auto;
   z-index: 999999;
   position: fixed;
-  right: 0;
-  margin-top: .5rem;
+  right: 2rem;
+  float: right;
 }
 .navBG_list{
   color: white !important;
-  background: $darkerBlue;
+  background: linear-gradient($darkerBlue, $positive) !important;
+  //background: $darkerBlue;
 }
 .navBG_friends{
   color: white !important;
-  background: $darkerBlue;
+  background: linear-gradient($darkerBlue, $positive) !important;
+  //background: $darkerBlue;
 }
 .navBG_account{
   color: white !important;
-  background: $darkerBlue;
+  background: linear-gradient($darkerBlue, $positive) !important;
+  //background: $darkerBlue;
 }
 
 /*Friends */
 .flashError{
   padding: .4rem;
-  background: rgba(236, 103, 103, 0.5);
+  background: rgba(240, 170, 170, 1);
   border-radius: .5rem;
-  border: .1rem solid rgb(85, 29, 29);
+  border: .1rem solid rgb(71, 10, 10);
 }
 
 
 
 /* List Details */
+.checkItem{
+  height: .5rem !important;
+}
+.activeSort{
+  border-bottom: .2rem solid $darkerBlue;
+}
 .dropArrow{
   background: linear-gradient(rgb(255, 255, 255), $darkerBlue);
   box-shadow: 2px 2px 2px 1px $shadowColor;
@@ -106,7 +130,12 @@ select{
 }
 .dropArrowColor{
   color: $darkerBlue;
+  z-index: -1!important;
   font-size: 2.5rem;
+}
+.basicListWrap{
+  z-index: 999;
+  background: linear-gradient($lightBlue, rgb(232, 243, 251));
 }
 .listSettings{
   background: linear-gradient($lightBlue, rgb(232, 243, 251));
@@ -117,6 +146,13 @@ select{
 }
 .itemHeader{
   font-weight: 600;
+}
+.sortHeaders{
+  font-size: .8rem;
+}
+.sortBox{
+  border-bottom: .1rem solid $lightGrey;
+  padding-bottom: 0;
 }
 
 /* Tabs */
@@ -155,6 +191,34 @@ select{
 .recipientBtn{
   font-size: 1.2rem;
 }
+
+.basicTabBox{
+  padding: .3rem;
+  //background-color: $transparentGrey;
+
+}
+.basicTabBoxActive{
+  padding: .3rem;
+  border-bottom: .2rem solid $darkerBlue;
+  //background-color: $darkerBlueTrans;
+
+}
+.basicShadow{
+  box-shadow: 1px 1px 2px 1px $shadowColorSoft;
+}
+.basicLowBorder{
+  border-bottom: .1rem solid $lightGrey;
+}
+.basicRound{
+  border-radius: 1rem;
+}
+.fadeDown{
+  color: $lightGrey;
+}
+.pushDown{
+  margin-top: 2rem;
+}
+
 .clear{
   border: none !important;
   padding: none !important;
@@ -220,13 +284,13 @@ select{
   display: inline-block;
 }
 a:active{
-  color: $linkColor;
+  color: $positive;
 }
 a:visited{
-  color: $linkColor;
+  color: $positive;
 }
 a:link{
-  color: $linkColor;
+  color: $positive;
 }
 a:hover{
   color: $darkerBlue;

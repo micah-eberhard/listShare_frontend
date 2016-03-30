@@ -7,14 +7,14 @@
           <div class="col-md-12 size_full">
             <div class="row tabHeader">
               <div class="col-md-4 size_33 align_center">
-                <a href="" class="itemHeader" ng-click="showTab='Items'; LDC.resetError()">Items</a>
+                <a href="" class="itemHeader" ng-class="{'basicTabBoxActive' : (showTab==='Items'), 'basicTabBox' : (showTab!=='Items')}" ng-click="showTab='Items'; LDC.resetError()">Items</a>
               </div>
               <div class="col-md-4 size_33 align_center">
-                <a href="" class="itemHeader" ng-click="showTab='Recipients'; LDC.resetError()">Recipients</a>
+                <a href="" class="itemHeader" ng-class="{'basicTabBoxActive' : (showTab==='Recipients'), 'basicTabBox' : (showTab!=='Recipients')}" ng-click="showTab='Recipients'; LDC.resetError()">Recipients</a>
 
               </div>
               <div class="col-md-4 size_33 align_center">
-                <a href="" class="itemHeader" ng-click="showTab='Statistics'; LDC.resetError()">Statistics</a>
+                <a href="" class="itemHeader" ng-class="{'basicTabBoxActive' : (showTab==='Statistics'), 'basicTabBox' : (showTab!=='Statistics')}" ng-click="showTab='Statistics'; LDC.resetError()">Statistics</a>
 
               </div>
             </div>
@@ -38,15 +38,15 @@
                       <option value="kitchen">Kitchen</option>
                       <option value="other" ng-model="other_field">Other</option>
                     </select>
-                    <input ng-show="item_category === 'other'" class="size_full" type="text" name="category" value="item_category_other" placeholder="Category" ng-model="item_category_other" ng-change="other_field = item_category_other">
+                    <input ng-show="item_category === 'other'" class="size_full basicListWrap basicShadow basicRound" type="text" name="category" value="item_category_other" placeholder="Category" ng-model="item_category_other" ng-change="other_field = item_category_other">
                   </div>
                   <div class="col-md-3 size_25">
-                    <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addItem({'name':item_name, 'amount':item_amount, 'category':item_category, 'list_id':list.id})" name="addBtn"></button>
+                    <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addItem({'name':item_name, 'amount':item_amount, 'category':item_category, 'list_id':list.id}); item_category =''; item_amount=''; item_name=''; item_category_other=''" name="addBtn"></button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="showTab=='Recipients'" ng-init="recipientEmail = ''">
+            <div class="row" ng-show="showTab=='Recipients'">
               <div class="col-md-12 size_full">
                 <div class="row">
                   <div class="col-md-12 size_full align_center">
@@ -57,21 +57,20 @@
                 </div>
                 <div class="row size_full">
                   <div class="col-md-9 size_75">
-                    <input class="align_center size_full" type="text" name="addemail" value="recipientEmail" ng-model="recipientEmail" placeholder="Email" ng-change="LDC.searchFriends(recipientEmail)">
-                    {{recipientEmail}}
+                    <input class="align_center size_full" type="text" name="addemail"  ng-model="recipient.Email" placeholder="Email" ng-change="LDC.searchFriends(recipient.Email)">
                   </div>
                   <div class="col-md-3 size_25">
-                    <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addRecipient(recipientEmail, list)" name="addBtn"></button>
+                    <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addRecipient(recipient.Email, list); recipient.Email = ''; LDC.tempFriends=[]" name="addBtn"></button>
                   </div>
                 </div>
-                <div class="row" ng-show="LDC.tempFriends.length > 0">
+                <div class="row basicListWrap basicShadow basicRound" ng-show="LDC.tempFriends.length > 0">
                   <div class="col-md-12 size_full">
-                    <div class="row autoList" ng-repeat="friend in LDC.tempFriends">
-                        <div class="col-md-6 size_50 align_center" ng-click="LDC.checkLog(recipientEmail)">
+                    <div class="row" ng-repeat="friend in LDC.tempFriends" ng-click="recipient.Email = friend.email">
+                        <div class="col-md-6 size_50 align_center">
                           {{friend.firstName}}
                           {{friend.lastName}}
                         </div>
-                        <div class="col-md-6 size_50 align_left" ng-click="recipientEmail = friend.email">
+                        <div class="col-md-6 size_50 align_left">
                           {{friend.email}}
                         </div>
                     </div>
@@ -117,39 +116,45 @@
     </div>
 
 
-    <div class="row padding">
-      <div class="col-md-3 size_25" ng-click="sortBy = 'name'; nameReverse = !nameReverse; reverse = nameReverse">
-        Name
+    <div class="row padding sortBox">
+      <div class="col-md-3 size_25 align_center" ng-class="{'activeSort':sortBy === 'name'}" ng-click="sortBy = 'name'; nameReverse = !nameReverse; reverse = nameReverse">
+        <span class="sortHeaders">Name</span>
         <div class="topSelect inline">
           <span ng-hide="nameReverse" class="ion-ios-arrow-up size_50 align_center"></span>
           <span ng-show="nameReverse" class="ion-ios-arrow-down size_50 align_center"></span>
         </div>
       </div>
-      <div class="col-md-3 size_25" ng-click="sortBy = 'amount'; amountReverse = !amountReverse; reverse = amountReverse">
-        Amount
+      <div class="col-md-3 size_25 align_center" ng-class="{'activeSort':sortBy === 'amount'}" ng-click="sortBy = 'amount'; amountReverse = !amountReverse; reverse = amountReverse">
+        <span class="sortHeaders">Amount</span>
         <div class="topSelect inline">
           <span ng-hide="amountReverse" class="ion-ios-arrow-up size_50 align_center"></span>
           <span ng-show="amountReverse" class="ion-ios-arrow-down size_50 align_center"></span>
         </div>
       </div>
-      <div class="col-md-3 size_25" ng-click="sortBy = 'searching';searchingReverse = !searchingReverse; reverse = searchingReverse">
-        Searching
+      <div class="col-md-3 size_25 align_center" ng-class="{'activeSort':sortBy === 'searching'}" ng-click="sortBy = 'searching';searchingReverse = !searchingReverse; reverse = searchingReverse">
+        <span class="sortHeaders">Searching</span>
         <div class="topSelect inline">
           <span ng-hide="searchingReverse" class="ion-ios-arrow-up size_50 align_center"></span>
           <span ng-show="searchingReverse" class="ion-ios-arrow-down size_50 align_center"></span>
         </div>
       </div>
-      <div class="col-md-3 size_25" ng-click="sortBy = 'acquired'; acquiredReverse = !acquiredReverse; reverse = acquiredReverse">
-        Acquired
+      <div class="col-md-3 size_25 align_center" ng-class="{'activeSort':sortBy === 'acquired'}" ng-click="sortBy = 'acquired'; acquiredReverse = !acquiredReverse; reverse = acquiredReverse">
+        <span class="sortHeaders">Acquired</span>
         <div class="topSelect inline">
           <span ng-hide="acquiredReverse" class="ion-ios-arrow-up size_50 align_center"></span>
           <span ng-show="acquiredReverse" class="ion-ios-arrow-down size_50 align_center"></span>
         </div>
       </div>
     </div>
+    <div class="row size_full" ng-show="list.items.length <= 0 && !dropDown" >
+      <div class="col-md-12 size_full align_center">
+        <span class="description align_center fadeDown pushDown">You have no items. Click the arrow above to get started.</span>
+      </div>
+    </div>
     <ion-list>
-      <ion-item class="item-remove-animate" ng-repeat="item in list.items | filter:searchItem | orderBy:sortBy:reverse" ng-hide="!showInProgress && (item.searching > 0 || item.acquired > 0)">
-
+<div class="row">
+  <div class="col-md-12 size_full">
+      <ion-item class="item-remove-animate item-icon-right basicRound basicShadow itemWrapper" ng-repeat="item in list.items | filter:searchItem | orderBy:sortBy:reverse" ng-hide="!showInProgress && (item.searching > 0 || item.acquired > 0)">
         <div class="row">
           <div class="col-md-3 size_50">
             <span class="itemHeader">{{item.name}}</span>
@@ -157,16 +162,19 @@
               {{item.category}}
             </p>
           </div>
-          <div class="col-md-3 size_20">
+          <div class="col-md-3 size_25 align_left">
             {{item.amount}} oz
           </div>
-          <div class="col-md-3 size_15" ng-init="item.searching_mark = (item.searching > 0)">
-            <ion-checkbox class="clear"  ng-checked="item.searching > 0" ng-model="item.searching_mark" ng-change="item.changed = {searching:item.searching_mark}; LDC.updateItem(item)">
+          <div class="col-md-1 size_20" ng-init="item.searching_mark = (item.searching > 0)">
+            <ion-checkbox class="clear checkItem"  ng-checked="item.searching > 0" ng-model="item.searching_mark" ng-change="item.changed = {searching:item.searching_mark}; LDC.updateItem(item)">
             </ion-checkbox>
           </div>
-          <div class="col-md-3 size_15" ng-init="item.acquired_mark = (item.acquired > 0)">
-            <ion-checkbox  class="clear" ng-checked="item.acquired > 0" ng-model="item.acquired_mark" ng-change="item.changed = {acquired:item.acquired_mark}; LDC.updateItem(item)">
+          <div class="col-md-1 size_5" ng-init="item.acquired_mark = (item.acquired > 0)">
+            <ion-checkbox  class="clear checkItem" ng-checked="item.acquired > 0" ng-model="item.acquired_mark" ng-change="item.changed = {acquired:item.acquired_mark}; LDC.updateItem(item)">
             </ion-checkbox>
+          </div>
+          <div class="col-md-1 size_10">
+            <i class="icon ion-chevron-right icon-accessory"></i>
           </div>
         </div>
 
@@ -174,10 +182,12 @@
         <ion-option-button class="button-calm" ng-click="">
           Edit
         </ion-option-button>
-        <ion-option-button class="button-assertive" ng-click="">
+        <ion-option-button class="button-assertive" ng-click="LDC.deleteItem(item)">
           Delete
         </ion-option-button>
       </ion-item>
+    </div>
+  </div>
     </ion-list>
   </ion-content>
 </ion-view>
