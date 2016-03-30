@@ -35,6 +35,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.element.ng-hide{
+  display:none;
+}
 .dark_gradient{
   background: linear-gradient($positive, $darkerBlue) !important;
   box-shadow: 2px 2px 2px 1px $shadowColor;
@@ -52,8 +55,8 @@ input{
   margin: .1rem;
 }
 select{
-  border: .1rem solid grey !important;
-  border-radius: 1rem;
+  //border: .1rem solid grey !important;
+  border-radius: .5rem;
   margin: .1rem;
 }
 .holder {
@@ -300,4 +303,43 @@ a:hover{
 }
 a{
   text-decoration: none;
+}
+
+
+
+
+.bar.bar-loading {
+  display: block;
+  height: 24px;
+
+  /* starts right below a normal header */
+  //top: 44px;
+
+  /* make the text centered vertically and horizontally */
+  text-align: center;
+  padding: 0;
+  line-height: 24px;
+
+  /* transition 'sliding down' (check below)*/
+  -webkit-transition: 200ms all;
+}
+
+.has-header {
+  -webkit-transition: 200ms top;
+}
+.has-header.has-loading {
+  /* 44px (header) + 24px */
+  top: 68px;
+}
+
+/* make loading bar slide up/down */
+.bar-loading.ng-enter,
+.bar-loading.ng-leave.ng-leave-active {
+  height: 0;
+  border-width: 0px;
+}
+.bar-loading.ng-enter.ng-enter-active,
+.bar-loading.ng-leave {
+  height: 24px;
+  border-width: 1px;
 }

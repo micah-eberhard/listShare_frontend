@@ -2,13 +2,13 @@ angular.module('listShare.services', [])
 
 .service('apiURL', function () {
   return {
-    url: "http://localhost:3000"
+    url: "http://159.203.238.130:3000"
   };
 })
 
 .service('socketURL', function () {
   return {
-    url: "http://localhost:2500"
+    url: "http://159.203.238.130:2500"
   };
 })
 

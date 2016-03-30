@@ -5,7 +5,7 @@ angular.module('listShare.controllers', [])
   console.log("home");
 })
 
-.controller('ListsCtrl', function($scope, Lists, CheckLogin, socketService, apiInterface) {
+.controller('ListsCtrl', function($scope, $timeout, Lists, CheckLogin, socketService, apiInterface) {
   var vm = this;
   vm.verify = CheckLogin.check;
   vm.lists = Lists.getAll();
@@ -31,6 +31,7 @@ angular.module('listShare.controllers', [])
       vm.errorList = [];
       if(res.data.success)
       {
+        $scope.showIndicator({success:true, text: 'List Added'});
         lengthHold = recipients.length;
         lengthCheck = 0;
         for(var i=0; i < recipients.length; i++)
@@ -40,12 +41,14 @@ angular.module('listShare.controllers', [])
           .then(function(addRes){
             if(addRes.data.success)
             {
+            //  $scope.showIndicator({success:true, text: 'Added'});
               console.log("Added: " + addRes.data.id);
               lengthCheck ++;
             }
             else {
               console.log(addRes.data.reason);
-              vm.errorList.push(addRes.data.reason);
+              $scope.showIndicator({error:true, text: addRes.data.reason});
+              vm.errorList.push(addRes.data.reason); //Old error push
               lengthCheck ++;
             }
             if(lengthCheck === lengthHold)
@@ -66,9 +69,11 @@ angular.module('listShare.controllers', [])
     .then(function(res){
       if(res.success)
       {
+        //$scope.showIndicator({success:true, text: 'Added'});
         console.log("Added " + email);
       }
       else {
+        $scope.showIndicator({error:true, text: "Failed to add " + email});
         console.log("Failed to add " + email);
       }
     });
@@ -150,9 +155,23 @@ angular.module('listShare.controllers', [])
       });
     }
   }
+
+
+  $scope.data = {
+    flash:false,
+    msg: {}
+  };
+
+  $scope.showIndicator = function(msgObj){
+    msgObj.flash = true;
+    $scope.data = msgObj;
+    $timeout(function() {
+      $scope.data = {flash:false, msg: {}};
+    }, 2000);
+  };
 })
 
-.controller('ListDetailCtrl', function($scope, $stateParams, $ionicListDelegate, Lists, CheckLogin, socketService, apiInterface, friendService) {
+.controller('ListDetailCtrl', function($scope, $stateParams, $ionicListDelegate, $timeout, Lists, CheckLogin, socketService, apiInterface, friendService) {
   var vm = this;
   vm.verify = CheckLogin.check;
   $scope.list = Lists.get($stateParams.listId);
@@ -200,10 +219,14 @@ angular.module('listShare.controllers', [])
     .then(function(res){
       delete vm.error;
       if(res.data.success)
+      {
+        $scope.showIndicator({success:true, text: 'Item Added'});
         console.log("Item Added");
+      }
       else
       {
-        vm.error = res.data.reason;
+        $scope.showIndicator({error:true, text: res.data.reason});
+        //vm.error = res.data.reason;
         console.log("Item failed to add.");
       }
     });
@@ -227,20 +250,49 @@ angular.module('listShare.controllers', [])
         delete vm.error;
         if(res.data.success)
         {
+          $scope.showIndicator({success:true, text: (email +' Added')});
           console.log("Added " + email);
         }
         else {
-          vm.error = res.data.reason;
+          //vm.error = res.data.reason;
+          $scope.showIndicator({error:true, text: res.data.reason});
           console.log("Failed to add " + email);
         }
       });
     }
 
+
     var currSocket = socketService.getSocket(); //= socketService.getSocket();
 
-      currSocket
-      .removeAllListeners('push_list_single')
-      .on('push_list_single', function(data){
+    var tryConnect = setInterval(function() {
+      if(currSocket === false)
+      {
+        console.log("Attempt Socket");
+        currSocket = socketService.getSocket();
+      }
+      else {
+        stopInterval(tryConnect);
+      }
+    }, 300);
+
+    function stopInterval(currInterval)
+    {
+      //console.log(currSocket);
+      clearInterval(currInterval);
+      if(true)
+      {
+        currSocket
+        .removeAllListeners('push_list_single')
+        .on('push_list_single', updateSingle);
+      }
+    }
+
+    //var currSocket = socketService.getSocket(); //= socketService.getSocket();
+
+      // currSocket
+      // .removeAllListeners('push_list_single')
+      // .on('push_list_single', function(data){
+      function updateSingle(data){
         console.log("Single Item *******");
         var found = false;
         for(var i=0; i < $scope.list.items.length && !found; i++)
@@ -269,13 +321,34 @@ angular.module('listShare.controllers', [])
         {
           $scope.list.items.push(data.item);
         }
-      });
+      }
+
+
+      $scope.data = {
+        flash:false,
+        msg: {}
+      };
+
+      $scope.showIndicator = function(msgObj){
+        msgObj.flash = true;
+        $scope.data = msgObj;
+        $timeout(function() {
+          $scope.data = {flash:false, msg: {}};
+        }, 2000);
+      };
 })
 
-.controller('FriendsCtrl', function($scope, CheckLogin, apiInterface, friendService) {
+.controller('FriendsCtrl', function($scope, $ionicPlatform, $timeout, CheckLogin, apiInterface, friendService) {
   var vm = this;
   vm.verify = CheckLogin.check;
   vm.friendList = [];
+  vm.isVisible = false;
+  $ionicPlatform.ready(function()
+  {
+// $scope.remove_padding = "padding-bottom:0px !important;";
+    vm.isVisible = true;
+    console.log("Fire");
+  });
 
   vm.removeFriend = function(friend){
     apiInterface.removeFriend(friend.friend_id)
@@ -298,14 +371,16 @@ angular.module('listShare.controllers', [])
   vm.addFriend = function(email){
     apiInterface.addFriend(email)
     .then(function(res){
-      delete vm.error;
+      //delete vm.error;
       if(res.data.success)
       {
+        $scope.showIndicator({success:true, text: email + " Added"});
         vm.refreshFriends(res.data.friend_id);
       }
       else
       {
-        vm.error = res.data.reason;
+        //vm.error = res.data.reason;
+        $scope.showIndicator({error:true, text: res.data.reason});
         console.log(res.data.reason);
       }
     });
@@ -339,23 +414,32 @@ angular.module('listShare.controllers', [])
   }
 
 
+  $scope.data = {
+    flash:false,
+    msg: {}
+  };
+
+  $scope.showIndicator = function(msgObj){
+    msgObj.flash = true;
+    $scope.data = msgObj;
+    $timeout(function() {
+      $scope.data = {flash:false, msg: {}};
+    }, 2000);
+  };
+
+
 })
 
-.controller('AccountCtrl', function($scope, $location, $state, CheckLogin, authService, socketService, apiInterface, Lists) {
+.controller('AccountCtrl', function($scope, $location, $state, $timeout, CheckLogin, authService, socketService, apiInterface, Lists) {
   var vm = this;
 
   vm.login = loginHandler;
   vm.register = registerHandler;
   vm.logout = logoutHandler;
 
+  vm.signup = false;
   vm.showProfile = false;
   vm.verify = CheckLogin.check;
-
-  console.log("Logged in?: " + vm.showProfile);
-
-  vm.settings = {
-    enableFriends: true
-  };
 
 
   function loginHandler (email, password)
@@ -375,6 +459,7 @@ angular.module('listShare.controllers', [])
         });
       }
       else {
+        $scope.showIndicator({error:true, text: response.data.reason});
         console.log(response.data.reason);
       }
     });
@@ -387,9 +472,12 @@ angular.module('listShare.controllers', [])
       //console.log(localStorage.token);
       if(response.data.success)
       {
-        $state.go($state.current, {}, {reload: true});
+        $scope.showIndicator({success:true, text: "Registration Successful"});
+        //$state.go($state.current, {}, {reload: true});
+        vm.signup = false;
       }
       else {
+        $scope.showIndicator({error:true, text: response.data.reason});
         console.log(response.data.reason);
       }
     });
@@ -403,5 +491,17 @@ angular.module('listShare.controllers', [])
     $state.go($state.current, {}, {reload: true});
   }
 
+  $scope.data = {
+    flash:false,
+    msg: {}
+  };
+
+  $scope.showIndicator = function(msgObj){
+    msgObj.flash = true;
+    $scope.data = msgObj;
+    $timeout(function() {
+      $scope.data = {flash:false, msg: {}};
+    }, 2000);
+  };
 
 });

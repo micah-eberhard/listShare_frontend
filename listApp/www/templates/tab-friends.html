@@ -1,5 +1,9 @@
 <ion-view ng-init="FC.verify()" view-title="Friends">
-  <ion-content class="">
+  <ion-content class="ng-hide" ng-class="{'has-loading': data.isLoading}" ng-show="FC.isVisible">
+    <div class="bar bar-loading" ng-class="{'bar-assertive' : (data.error), 'bar-balanced' : (data.success)}" ng-if="data.flash">
+      {{data.text}}
+    </div>
+
     <div class="row">
       <div class="col-md-12 size_full">
         <div class="row">
@@ -58,5 +62,6 @@
         </div>
       </div>
     </div>
+
   </ion-content>
 </ion-view>

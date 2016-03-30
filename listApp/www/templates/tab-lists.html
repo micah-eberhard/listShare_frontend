@@ -1,5 +1,8 @@
 <ion-view ng-init="LC.verify()" view-title="My Lists">
   <ion-content ng-init="reverse = false; newAdd = false; sortBy='name'">
+    <div class="bar bar-loading" ng-class="{'bar-assertive' : (data.error), 'bar-balanced' : (data.success)}" ng-if="data.flash">
+      {{data.text}}
+    </div>
     <div class="row mainListOptions basicLowBorder">
       <div class="col-md-5 size_25">
         <select class="size_90 topSelect" name="sort" ng-model="sortBy">
@@ -44,7 +47,7 @@
                 <input type="text" class="addRecipient align_center size_full" name="name" value="" ng-model="addRecipient" placeholder="Add Recipient">
               </div>
               <div class="col-md-2 size_20 align_right">
-                <button class="ion-ios-plus-outline addBtn recipientBtn align_center" type="button" ng-click="recipients.push(addRecipient)" name="addRecipient"></button>
+                <button class="ion-ios-plus-outline addBtn recipientBtn align_center" type="button" ng-click="recipients.push(addRecipient); addRecipient=''" name="addRecipient"></button>
               </div>
             </div>
           </div>
@@ -52,7 +55,7 @@
           <div class="col-md-3 size_25">
             <div class="row">
               <div class="col-md-12 size_full align_right">
-                <button class="ion-checkmark-round addBtn recipientBtn align_center" type="button" ng-click="LC.addList(addName, recipients); newAdd = !newAdd; addName=''; recipients = [];" name="addBtn"> Done</button>
+                <button class="ion-checkmark-round addBtn recipientBtn align_center" type="button" ng-click="LC.addList(addName, recipients); newAdd = !newAdd; addName=''; recipients = []; addRecipient=''" name="addBtn"> Done</button>
               </div>
             </div>
           </div>

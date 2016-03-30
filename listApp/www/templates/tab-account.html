@@ -1,11 +1,14 @@
 <ion-view ng-init="AC.showProfile = AC.verify()" view-title="Account">
   <ion-content>
-      <img class="accntBanner" src="./img/ListShareBanner.png" alt="" />
+    <div class="bar bar-loading" ng-class="{'bar-assertive' : (data.error), 'bar-balanced' : (data.success)}" ng-if="data.flash">
+      {{data.text}}
+    </div>
+  <img class="accntBanner" src="./img/ListShareBanner.png" alt="" />
     <div class="row" ng-hide="AC.showProfile" ng-init="signup = false">
       <div class="col-md-1 size_20">
 
       </div>
-      <div class="col-md-10 align_center size_full" ng-hide="signup">
+      <div class="col-md-10 align_center size_full" ng-hide="AC.signup">
         <p>
           <label for="email">Email</label>
           <input class="align_center size_full" ng-model="LI_email" type="text" name="email" placeholder="Email" value="">
@@ -18,10 +21,10 @@
           <button class="authBtn button button-block button-positive" type="button" name="loginBtn" ng-click="AC.login(LI_email, LI_password)">Log In</button>
         </p>
         <p>
-          <a href="#" ng-click="signup = !signup">Need to Sign Up?</a>
+          <a href="#" ng-click="AC.signup = !AC.signup">Need to Sign Up?</a>
         </p>
       </div>
-      <div class="col-md-10 align_center size_full" ng-show="signup">
+      <div class="col-md-10 align_center size_full" ng-show="AC.signup">
         <p>
           <label for="email">Email</label>
           <input class="align_center size_full" ng-model="SU_email" type="text" name="email" placeholder="Email" value="">
@@ -39,10 +42,10 @@
           <input class="align_center size_full" ng-model="SU_lname" type="text" name="lastName" placeholder="Last Name" value="">
         </p>
         <p>
-          <button class="authBtn button button-block button-positive" type="button" name="signupBtn" ng-click="AC.register(SU_email, SU_password, SU_fname, SU_lname); signup=false">Sign Up</button>
+          <button class="authBtn button button-block button-positive" type="button" name="signupBtn" ng-click="AC.register(SU_email, SU_password, SU_fname, SU_lname);">Sign Up</button>
         </p>
         <p>
-          <a href="#" ng-click="signup = !signup">Need to Log In?</a>
+          <a href="#" ng-click="AC.signup = !AC.signup">Need to Log In?</a>
         </p>
       </div>
       <div class="col-md-1 size_20">
