@@ -9799,6 +9799,9 @@ select {
   border: 0.1rem solid #470a0a; }
 
 /* List Details */
+.itemEditor {
+  z-index: 9999999; }
+
 .checkItem {
   height: .5rem !important; }
 

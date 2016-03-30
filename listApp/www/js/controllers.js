@@ -9,6 +9,12 @@ angular.module('listShare.controllers', [])
   var vm = this;
   vm.verify = CheckLogin.check;
   vm.lists = Lists.getAll();
+
+  if(vm.lists.length <= 0)
+  {
+    updateLists({location:'lists'});
+  }
+
   vm.remove = function(list) {
     Lists.remove(list);
   };
@@ -146,10 +152,11 @@ angular.module('listShare.controllers', [])
   }
 })
 
-.controller('ListDetailCtrl', function($scope, $stateParams, Lists, CheckLogin, socketService, apiInterface, friendService) {
+.controller('ListDetailCtrl', function($scope, $stateParams, $ionicListDelegate, Lists, CheckLogin, socketService, apiInterface, friendService) {
   var vm = this;
   vm.verify = CheckLogin.check;
   $scope.list = Lists.get($stateParams.listId);
+  vm.showEdit = {};
   vm.friendList = friendService.get();
   vm.tempFriends = [];
 
@@ -157,6 +164,9 @@ angular.module('listShare.controllers', [])
   // {
   //   console.log(str);
   // };
+  vm.resetOptions = function(){
+    $ionicListDelegate.closeOptionButtons();
+  };
 
   vm.resetError = function(){
     delete vm.error;
@@ -231,7 +241,6 @@ angular.module('listShare.controllers', [])
       currSocket
       .removeAllListeners('push_list_single')
       .on('push_list_single', function(data){
-
         console.log("Single Item *******");
         var found = false;
         for(var i=0; i < $scope.list.items.length && !found; i++)
@@ -332,7 +341,7 @@ angular.module('listShare.controllers', [])
 
 })
 
-.controller('AccountCtrl', function($scope, $location, $state, CheckLogin, authService, socketService) {
+.controller('AccountCtrl', function($scope, $location, $state, CheckLogin, authService, socketService, apiInterface, Lists) {
   var vm = this;
 
   vm.login = loginHandler;
@@ -352,18 +361,37 @@ angular.module('listShare.controllers', [])
   function loginHandler (email, password)
   {
     authService.login(email, password).then(function(response) {
-      localStorage.setItem('token', response.data.token);
-      //console.log(localStorage.token);
-      //vm.showProfile = CheckLogin.check();
-      $state.go('tab.lists');
+      if(response.data.success)
+      {
+        localStorage.setItem('token', response.data.token);
+
+        apiInterface.getLists()
+        .then(function(res){
+          if (res.data.success)
+          {
+            Lists.setLists(res.data.data);
+            $state.go('tab.lists');
+          }
+        });
+      }
+      else {
+        console.log(response.data.reason);
+      }
     });
   }
 
   function registerHandler (email, password, fname, lname)
   {
-    authService.register(email, password, fname, lname).then(function(response) {
+    authService.register(email, password, fname, lname)
+    .then(function(response) {
       //console.log(localStorage.token);
-      $state.go($state.current, {}, {reload: true});
+      if(response.data.success)
+      {
+        $state.go($state.current, {}, {reload: true});
+      }
+      else {
+        console.log(response.data.reason);
+      }
     });
   }
 
