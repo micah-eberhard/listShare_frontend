@@ -314,6 +314,7 @@ angular.module('listShare.controllers', [])
               $scope.list.items[i].list_id = data.item.list_id; // <----- or below, missing data
               $scope.list.items[i].amount = data.item.amount;
               $scope.list.items[i].price = data.item.price;
+              $scope.list.items[i].comments = data.item.comments;
               $scope.list.items[i].searching = data.item.searching;
               $scope.list.items[i].acquired = data.item.acquired;
               $scope.list.items[i].category = data.item.category;

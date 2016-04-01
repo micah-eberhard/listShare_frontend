@@ -33,15 +33,19 @@
                 <div class="row size_full">
                   <div class="col-md-9 size_75">
                     <input class="align_center size_full" type="text" name="name" value="" placeholder="Name" ng-model="item_name">
-                    <input class="align_center size_full" type="number" name="amount" value="" placeholder="Amount" ng-model="item_amount">
+                    <input class="align_center size_full" type="number" name="amount" value="" placeholder="Quantity" ng-model="item_amount">
                     <select class="align_center size_full"  name="category" ng-model="item_category">
                       <option value="meat">Meat</option>
                       <option value="dairy">Dairy</option>
                       <option value="grains">Grains</option>
+                      <option value="fruit">Fruit</option>
+                      <option value="vegitables">Vegitables</option>
+                      <option value="sweets">Sweets</option>
+                      <option value="household">Household</option>
                       <option value="kitchen">Kitchen</option>
                       <option value="other" ng-model="other_field">Other</option>
                     </select>
-                    <input ng-show="item_category === 'other'" class="size_full basicListWrap basicShadow basicRound" type="text" name="category" value="item_category_other" placeholder="Category" ng-model="item_category_other" ng-change="other_field = item_category_other">
+                    <!-- <input ng-show="item_category === 'other'" class="size_full basicListWrap basicShadow basicRound" type="text" name="category" value="item_category_other" placeholder="Category" ng-model="item_category_other" ng-change="other_field = item_category_other"> -->
                   </div>
                   <div class="col-md-3 size_25">
                     <button class="ion-ios-plus-outline button-positive addBtn detailAdd align_center" type="button" ng-click="LDC.addItem({'name':item_name, 'amount':item_amount, 'category':item_category, 'list_id':list.id}); item_category =''; item_amount=''; item_name=''; item_category_other=''" name="addBtn"></button>
@@ -87,13 +91,36 @@
               </div>
             </div>
             <div class="row" ng-show="showTab=='Statistics'">
-              <div class="col-md-12">
-                <p class="description">
-                  Statistics
-                </p>
-                <div ng-repeat="(key, value) in list.stats" class="row">
-                  <div class="col-md-12">
-                    {{key}} : {{value}}
+              <div class="col-md-12 size_full">
+                <div class="row">
+                  <div class="col-md-12 size_full align_center">
+                      <p class="description">
+                      Statistics
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 size_50 align_right">
+                    Number of Items:
+                  </div>
+                  <div class="col-md-6 size_20 align_right">
+                    {{list.items.length}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 size_50 align_right">
+                    Average cost:
+                  </div>
+                  <div class="col-md-6 size_20 align_right">
+                    {{list.stats.avgCost | currency : $ : 2}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 size_50 align_right">
+                    Total cost:
+                  </div>
+                  <div class="col-md-6 size_20 align_right">
+                    {{list.stats.totalCost | currency : $ : 2}}
                   </div>
                 </div>
               </div>
@@ -128,7 +155,7 @@
         </div>
       </div>
       <div class="col-md-3 size_25 align_center" ng-class="{'activeSort':sortBy === 'amount'}" ng-click="sortBy = 'amount'; amountReverse = !amountReverse; reverse = amountReverse">
-        <span class="sortHeaders">Amount</span>
+        <span class="sortHeaders">Quantity</span>
         <div class="topSelect inline">
           <span ng-hide="amountReverse" class="ion-ios-arrow-up size_50 align_center"></span>
           <span ng-show="amountReverse" class="ion-ios-arrow-down size_50 align_center"></span>
@@ -185,10 +212,10 @@
             </div>
             <div class="row">
               <div class="col-md-6 size_50 align_left" ng-show="LDC.showEdit.id === item.id">
-                <label for="name">Amount: </label>
+                <label for="name">Quantity: </label>
               </div>
               <div class="col-md-6 size_50 align_center" ng-show="LDC.showEdit.id === item.id">
-                <input class="description align_center smallInput" ng-model="hold.editAmount" type="number" name="amount" placeholder="Amount">
+                <input class="description align_center smallInput" ng-model="hold.editAmount" type="number" name="amount" placeholder="Quantity">
               </div>
             </div>
             <div class="row">
@@ -213,8 +240,8 @@
 
 
           <!--  -->
-          <div class="col-md-3 size_25 align_left" ng-show="LDC.showEdit.id !== item.id">
-            {{item.amount}} oz
+          <div class="col-md-3 size_25 align_center" ng-show="LDC.showEdit.id !== item.id">
+            {{item.amount}}
           </div>
           <div class="col-md-1 size_20" ng-show="LDC.showEdit.id !== item.id" ng-init="item.searching_mark = (item.searching > 0)">
             <ion-checkbox ng-disabled="(item.acquired > 0)" class="clear checkItem"  ng-checked="item.searching > 0" ng-model="item.searching_mark" ng-change="item.changed = {searching:item.searching_mark}; LDC.updateItem(item)">
@@ -225,7 +252,7 @@
             </ion-checkbox>
           </div>
           <div class="col-md-1 size_10" ng-show="LDC.showEdit.id !== item.id">
-            <i class="icon ion-chevron-right icon-accessory"></i>
+            <i class="icon ion-chevron-left icon-accessory"></i>
           </div>
         </div>
         <div class="row" ng-class="{'topHeader':(item.comments || item.price)}" ng-show="LDC.showEdit.id !== item.id && (item.comments || item.price)">
